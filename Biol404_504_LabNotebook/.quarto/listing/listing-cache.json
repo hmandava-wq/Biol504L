@@ -1,0 +1,18 @@
+{
+  "listingMap": {
+    "guided-labs/index.qmd": [
+      "*.qmd"
+    ],
+    "projects/Semester-Project/index.qmd": [
+      "../../reading-notes/*.qmd",
+      "idea*.qmd",
+      "../../weekly-notes/*.qmd"
+    ],
+    "weekly-notes/index.qmd": [
+      "*.qmd"
+    ],
+    "reading-notes/index.qmd": [
+      "*.qmd"
+    ]
+  }
+}

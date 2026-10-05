@@ -1,0 +1,1055 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.9.38">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Your Name">
+<meta name="dcterms.date" content="2026-08-31">
+<meta name="keywords" content="conda, container, hpc, install">
+
+<title>Accessing W&amp;M’s HPC – My lab notebook</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<script src="../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-15634bcf2e68342d4ad2dfa704d543f6.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap-1dd488aeb00c2438f5d0eb1cc7c63bb5.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+
+<link rel="stylesheet" href="../styles.css">
+</head>
+
+<body class="nav-fixed quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="../index.html">
+    <span class="navbar-title">My lab notebook</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../guided-labs/index.html"> 
+<span class="menu-text">Guided Labs</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../weekly-notes/index.html"> 
+<span class="menu-text">Weekly notes</span></a>
+  </li>  
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-projects" role="link" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">Projects</span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-projects">    
+        <li>
+    <a class="dropdown-item" href="../projects/how-to.html">
+ <span class="dropdown-text">How to create new projects</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../projects/Semester-Project/index.html">
+ <span class="dropdown-text">Semester-Project</span></a>
+  </li>  
+    </ul>
+  </li>
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#goals-of-the-lab-overall" id="toc-goals-of-the-lab-overall" class="nav-link active" data-scroll-target="#goals-of-the-lab-overall">Goals of the lab overall</a>
+  <ul class="collapse">
+  <li><a href="#for-your-success-in-the-lab" id="toc-for-your-success-in-the-lab" class="nav-link" data-scroll-target="#for-your-success-in-the-lab">For your success in the lab</a></li>
+  </ul></li>
+  <li><a href="#lab-deep-dive" id="toc-lab-deep-dive" class="nav-link" data-scroll-target="#lab-deep-dive">Lab Deep-dive</a>
+  <ul class="collapse">
+  <li><a href="#overview-of-todays-lab" id="toc-overview-of-todays-lab" class="nav-link" data-scroll-target="#overview-of-todays-lab">Overview of today’s lab</a></li>
+  <li><a href="#accessing-the-hpc-at-william-mary" id="toc-accessing-the-hpc-at-william-mary" class="nav-link" data-scroll-target="#accessing-the-hpc-at-william-mary">Accessing the HPC at William &amp; Mary</a></li>
+  <li><a href="#before-we-get-started" id="toc-before-we-get-started" class="nav-link" data-scroll-target="#before-we-get-started">Before we get started</a></li>
+  <li><a href="#wms-hpc-server" id="toc-wms-hpc-server" class="nav-link" data-scroll-target="#wms-hpc-server">W&amp;M’s HPC server</a>
+  <ul class="collapse">
+  <li><a href="#overview-of-the-unix-operating-system-and-directory-structure" id="toc-overview-of-the-unix-operating-system-and-directory-structure" class="nav-link" data-scroll-target="#overview-of-the-unix-operating-system-and-directory-structure">Overview of the UNIX operating system and directory structure</a></li>
+  </ul></li>
+  <li><a href="#connecting-to-bora.sciclone.wm.edu" id="toc-connecting-to-bora.sciclone.wm.edu" class="nav-link" data-scroll-target="#connecting-to-bora.sciclone.wm.edu">Connecting to <code>bora.sciclone.wm.edu</code></a></li>
+  <li><a href="#hpc-navigation" id="toc-hpc-navigation" class="nav-link" data-scroll-target="#hpc-navigation">HPC Navigation</a></li>
+  <li><a href="#dealing-with-containers" id="toc-dealing-with-containers" class="nav-link" data-scroll-target="#dealing-with-containers">Dealing with Containers</a>
+  <ul class="collapse">
+  <li><a href="#loading-modules-software" id="toc-loading-modules-software" class="nav-link" data-scroll-target="#loading-modules-software">Loading Modules (Software)</a></li>
+  </ul></li>
+  <li><a href="#submitting-hpc-jobs" id="toc-submitting-hpc-jobs" class="nav-link" data-scroll-target="#submitting-hpc-jobs">Submitting HPC Jobs</a>
+  <ul class="collapse">
+  <li><a href="#making-our-first-job-submission-script" id="toc-making-our-first-job-submission-script" class="nav-link" data-scroll-target="#making-our-first-job-submission-script">Making our first job-submission-script</a></li>
+  </ul></li>
+  </ul></li>
+  <li><a href="#quick-start-guide" id="toc-quick-start-guide" class="nav-link" data-scroll-target="#quick-start-guide">Quick Start Guide</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Accessing W&amp;M’s HPC</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Your Name </p>
+          </div>
+  </div>
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">August 31, 2026</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+<div>
+  <div class="keywords">
+    <div class="block-title">Keywords</div>
+    <p>conda, container, hpc, install</p>
+  </div>
+</div>
+
+</header>
+
+
+<section id="goals-of-the-lab-overall" class="level1">
+<h1>Goals of the lab overall</h1>
+<hr>
+<p>The skills acquired in this lab class are crucial for bioinformatic tasks using molecular data, such as data analysis, scripting, and working in high-performance computing (HPC) environments. My hope is that you don’t just type the commands into the terminal and move on – I would like you to <strong><em>think</em></strong> about what these commands are doing and start imagining how they could be useful in analyzing your own data.</p>
+<section id="for-your-success-in-the-lab" class="level2">
+<h2 class="anchored" data-anchor-id="for-your-success-in-the-lab">For your success in the lab</h2>
+<p>Each lab is inteded to be a reference point for you on various bioinformatic tasks. To make the most of these labs, please treat them like a <strong>personal resource</strong>, so adjust any specific commands accordingly.</p>
+<hr>
+</section>
+</section>
+<section id="lab-deep-dive" class="level1">
+<h1>Lab Deep-dive</h1>
+<hr>
+<section id="overview-of-todays-lab" class="level3">
+<h3 class="anchored" data-anchor-id="overview-of-todays-lab">Overview of today’s lab</h3>
+<p>This lab provides an introduction to UNIX/Linux operating systems and the fundamentals of connecting to remote servers in the context of bioinformatics. Throughout the labs, you will gain hands-on experience with essential <em>bash</em> commands, including file manipulation, and remote server access.</p>
+<p>I strongly suggest asking questions today while the exercise is fresh in your mind (and while your classmates are around to help you!).</p>
+</section>
+<section id="accessing-the-hpc-at-william-mary" class="level3">
+<h3 class="anchored" data-anchor-id="accessing-the-hpc-at-william-mary">Accessing the HPC at William &amp; Mary</h3>
+<ul class="task-list">
+<li><label><input type="checkbox">Access William &amp; Mary’s HPC</label></li>
+<li><label><input type="checkbox">Make the first container on the HPC</label></li>
+<li><label><input type="checkbox">Install some software into that container</label></li>
+</ul>
+</section>
+<section id="before-we-get-started" class="level2">
+<h2 class="anchored" data-anchor-id="before-we-get-started">Before we get started</h2>
+<p>All of the labs for this course will be in QuartoMD format like this. You will be required to copy these to your own personal account and should be updating them! Your only formal grades for this course are based on the semester project. These guided-labs are there to help you build your familiarity with creating documentation, managing, data, reporting, and with all sorts of coding and scripting.</p>
+<p>Update and add things as you see fit! The more effort you place here, the more useful this will be for you!</p>
+<p>At times, I will include blocks to highlight snippets of code and/or get you to pause and think!</p>
+<div class="callout callout-style-default callout-note callout-titled" title="Note">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>There will be some questions in blue that you can answer.</p>
+</div>
+</div>
+<p>Some commands/instructions will have the potential to set you back, and require some deeper thought and/or carefulness.</p>
+<div class="callout callout-style-default callout-caution callout-titled" title="Caution">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Caution</span>Caution
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>This will highlight things that may need a bit of caution before you proceed.</p>
+<p>This can include steps that may take a bit of time, or dangerous coding commands (e.g., those that remove <em>all</em> the files…)</p>
+</div>
+</div>
+<div class="callout callout-style-default callout-warning callout-titled" title="Warning">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Warning</span>Warning
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Sometimes, it may just be a simple ‘warning’.</p>
+</div>
+</div>
+<p>The first few weeks of the lab will focus on getting you comfortable with the command-line, before we move into diverse analyses, including <strong>differential gene expression</strong> and <strong>population genomics</strong>. This will include step-by-step instructions using our examplar data sets.</p>
+<p>My goal is for you to feel comfortable enough to repeat the analyses on the data set of your choice!</p>
+<hr>
+</section>
+<section id="wms-hpc-server" class="level2">
+<h2 class="anchored" data-anchor-id="wms-hpc-server">W&amp;M’s HPC server</h2>
+<p>If you are using your own computer and want to <em>access the HPC from off-campus</em>, then you will need to download the W&amp;M VPN client. See this <a href="https://www.wm.edu/offices/it/services/network/vpn/">vpn installation link</a> for instructions. If you are connected to the W&amp;M Wi-Fi you will not need to connect to the VPN.</p>
+<p>Once you are conneced to the W&amp;M VPN, or using the W&amp;M Wi-Fi, you will need to <code>ssh</code> into one of the sciclone’s <a href="https://www.wm.edu/offices/it/services/researchcomputing/atwm/systemarchitecture/nodes/">subclusters</a>. SciClone is comprised of many different servers (subclusters), each with their own unique set of resources (i.e., high powered CPU’s but low RAM). For most of the lab, we will be using <em>bora</em>.</p>
+<p>If using your own computer and you run into issues accessing the HPC, ask me for help if needed!</p>
+<section id="overview-of-the-unix-operating-system-and-directory-structure" class="level3">
+<h3 class="anchored" data-anchor-id="overview-of-the-unix-operating-system-and-directory-structure">Overview of the UNIX operating system and directory structure</h3>
+<ol type="1">
+<li>The core structure of Unix directories follows a hierarchical tree-like organization. The root directory serves as the top-level directory, and all other directories and files are organized beneath it</li>
+<li>When you first connect to the server, you will be in your home directory by default.</li>
+<li>Keep this structure in mind when you’re navigating through directories, especially once we start up/downloading data to your personal computers.</li>
+<li>If you ever get confused where you are you can return to the home directory using <code>cd</code></li>
+</ol>
+</section>
+</section>
+<section id="connecting-to-bora.sciclone.wm.edu" class="level2">
+<h2 class="anchored" data-anchor-id="connecting-to-bora.sciclone.wm.edu">Connecting to <code>bora.sciclone.wm.edu</code></h2>
+<p>For both PCs and Macs, I recommend using the terminal to access SciClone.</p>
+<ol type="1">
+<li><p>Open the Terminal software</p></li>
+<li><p>Connect to the remote server using <code>ssh</code> with your username:</p>
+<div class="callout callout-style-default callout-note callout-titled" title="SSH into Bora">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>SSH into Bora
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>In the code below, replace <code>wm-username</code> with your W&amp;M username!</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ssh</span> wm-username@bora.sciclone.wm.edu</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</div>
+<p>When you connect, you will be sitting in your <code>home directory</code> on the HPC!</p></li>
+</ol>
+<hr>
+</section>
+<section id="hpc-navigation" class="level2">
+<h2 class="anchored" data-anchor-id="hpc-navigation">HPC Navigation</h2>
+<p>Moving around the HPC uses common UNIX commands (I will provide a link to a useful cheatsheet).</p>
+<p>When you first log in, you are interacting the HPC’s <code>head-node</code> (we will talk about this in class!). Additionally, the location where you first “land” onto the HPC is <strong><em>not where you will work!</em></strong></p>
+<p>Before we do too much, let’s use some basic commands to see what is in our current folder, move around, and check where we are:</p>
+<ol type="1">
+<li><p>It may be kind of weird to think like this, but the parts of your laptop that you interact with really are just graphical representations of folders (directories). This is no different on the HPC! We can see the contents of this directory really easily.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div></li>
+<li><p>You should see a couple big directories, including <code>scr10</code>, <code>scr20</code>, <code>scr30</code>. These are the “scratch” spaces, which is our playground!</p>
+<div class="callout callout-style-default callout-caution callout-titled" title="Storage Limitations">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Caution</span>Storage Limitations
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><strong>Do not</strong> store files outside of <code>scr10</code> for this lab. Additionally, <strong>do not</strong> use <code>scr10</code> as a semi-permanent storage space! It is purged every few months, so please treat it like a shared kitchen and make sure we clean up after ourselves when we can!</p>
+</div>
+</div></li>
+<li><p>Let’s move into <code>scr10</code>, which is where we will do most of our work</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> scr10</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div></li>
+<li><p>It can be easy to get lost on the HPC! Thankfully, we have the <strong>best unix command ever</strong>: <code>pwd</code></p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="bu">pwd</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="callout callout-style-default callout-note callout-titled" title="`pwd` is your Friend!">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span><code>pwd</code> is your Friend!
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>The output of <code>pwd</code> is the PATH to your current location. Each <code>/</code> marks a different directory, so you can see <strong><em>exactly</em></strong> where you are.</p>
+<p>This is referred to as the <em>absolute</em> PATH, which is just like having <em>exact</em> GPS coordinates for where you are!</p>
+</div>
+</div></li>
+<li><p>If you ever get lost, and this will happen, simply using <code>cd</code> will bring you back to your <code>home directory</code></p></li>
+<li><p>While we are here, let’s make a folder the lab too</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span> Biol404L</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div></li>
+<li><p>Move into the new folder you made!</p>
+<div class="callout callout-style-default callout-tip callout-titled" title="In case you get stumped">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-7-contents" aria-controls="callout-7" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>In case you get stumped
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-7" class="callout-7-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>Use the <code>cd</code> command to move into your folder!</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> Biol404L</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</div>
+</div></li>
+<li><p>Use <code>ls</code> and <code>pwd</code> to see what is inside this folder and where you are on the HPC!</p></li>
+<li><p>Move back to your <code>home directory</code></p>
+<div class="callout callout-style-default callout-tip callout-titled" title="In case you get stumped">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-8-contents" aria-controls="callout-8" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>In case you get stumped
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-8" class="callout-8-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>Use the <code>cd</code> by itself to move to your <code>home directory</code>!</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</div>
+</div></li>
+<li><p>Soon we will be done moving around for a little bit, just a few more to do! Let’s move <em>directly</em> into our <code>Biol404L</code> directory, then use <code>pwd</code> to check!</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> scr10/Biol404L</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="bu">pwd</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>You made it!</p></li>
+<li><p>We can also move “backwards” to a less “nested” folder. We can use <code>..</code> to navigate back a directory <strong>relative</strong> to where we are. Let’s try it out and see what it looks like!</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> ..</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="bu">pwd</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div></li>
+<li><p>Move back into your <code>Biol404L</code> folder (see the prior commands/steps if you need help, before asking me or a neighbor)</p></li>
+<li><p>Let’s move “backwards” two times at once!</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> ../..</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="callout callout-style-default callout-note callout-titled" title="Did you notice?">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-9-contents" aria-controls="callout-9" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Did you notice?
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-9" class="callout-9-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>To move back one directory, we use <code>..</code>. However, to move back <strong>two</strong> directories, we have to put a ‘/’ in the middle!</p>
+<p>You can do this as many times as needed, although it can get confusing…</p>
+</div>
+</div>
+</div></li>
+<li><p>Where are you now? How would you check?</p></li>
+<li><p>If you feel comfortable, make sure to move back into the Biol404L folder.</p></li>
+<li><p>One last task before we continue! Make a new directory called <code>Slurm_Scripts</code> then move into it!</p>
+<div class="callout callout-style-default callout-tip callout-titled" title="In case you get stumped">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-10-contents" aria-controls="callout-10" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>In case you get stumped
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-10" class="callout-10-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>You can use the <code>mkdir</code> command!</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span> Slurm_Scripts</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> Slurm_Scripts</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</div>
+</div></li>
+</ol>
+<p>Great! You are now on your way to becoming a UNIX navigation expert.</p>
+<hr>
+</section>
+<section id="dealing-with-containers" class="level2">
+<h2 class="anchored" data-anchor-id="dealing-with-containers">Dealing with Containers</h2>
+<p>This next section will combine a fair bit of commands, which will become more familiar as you work in this lab. You are <strong>not expected</strong> to be an expert right away!</p>
+<section id="loading-modules-software" class="level3">
+<h3 class="anchored" data-anchor-id="loading-modules-software">Loading Modules (Software)</h3>
+<p>The HPC has quite a lot of software already installed on it. This varies by with subclusters you are working with (remember we are working on <code>bora</code>).</p>
+<div class="callout callout-style-default callout-note callout-titled" title="Want to see the available software">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-11-contents" aria-controls="callout-11" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Want to see the available software
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-11" class="callout-11-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>If you do, then run the following command:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb12"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="ex">module</span> avail</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</div>
+</div>
+<p>We do want to use containers in this lab. To do so, we will be using <a href="https://www.anaconda.com/">Anaconda</a> and <a href="https://bioconda.github.io/">BioConda</a>.</p>
+<ol type="1">
+<li><p>Load the <code>miniforge</code> module</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb13"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="ex">module</span> load miniforge3/24.9.2-0</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div></li>
+<li><p>Let’s see what modules are loaded already</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb14"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="ex">module</span> avail</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="callout callout-style-default callout-note callout-titled" title="What do you see?">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-12-contents" aria-controls="callout-12" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>What do you see?
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-12" class="callout-12-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>You should notice that two pieces of software are highlighted!</p>
+<p>SLURM and Miniforge3!</p>
+</div>
+</div>
+</div></li>
+<li><p>Miniforge3 is our <code>Anaconda</code> software. However, it does not natively connect or know where to find bioinformatic packages. Most of those are available through <a href="https://bioconda.github.io/">BioConda</a>.</p></li>
+<li><p>We will follow the BioConda setup instructions for <code>Conda</code> that are found on their website.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb15"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="ex">conda</span> config <span class="at">--add</span> channels bioconda</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="ex">conda</span> config <span class="at">--add</span> channels conda-forge</span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a><span class="ex">conda</span> config <span class="at">--set</span> channel_priority strict</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div></li>
+</ol>
+<p>Now we are almost ready to install software! Woohoo!</p>
+<p>It is worth noting that <code>conda</code> refers to their “containers” as environments. For our purposes, this is the same thing, so do not be alarmed!</p>
+<hr>
+</section>
+</section>
+<section id="submitting-hpc-jobs" class="level2">
+<h2 class="anchored" data-anchor-id="submitting-hpc-jobs">Submitting HPC Jobs</h2>
+<p>In this part we will set up a job submission script. These are important to understand as we will be using them throughout the lab course.</p>
+<p>I have placed a template of one below (I will break down what each part means!):</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb16"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co">#!/bin/bash</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH --job-name=some-job-name</span></span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH --nodes=1</span></span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH --ntasks=1</span></span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH -t 1:00:00</span></span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH --mem=8G</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>It is nice to keep your job submission scripts together, staying organized is KEY!</p>
+<hr>
+<section id="making-our-first-job-submission-script" class="level3">
+<h3 class="anchored" data-anchor-id="making-our-first-job-submission-script">Making our first job-submission-script</h3>
+<p>We will actually be submitting a job to make our container <strong><em>and</em></strong> install some software! The easiest option is to use an existing text editor in the terminal, <code>pico</code></p>
+<ol type="1">
+<li><p>Open a new file, <code>prep_conda_env.sh</code>, with <code>pico</code> Your screen should be empty!</p></li>
+<li><p>Copy and paste the template for our job submission that was found in the last section</p></li>
+<li><p>To “write” the file quickly (equivalent of saving), press <code>ctl</code>+<code>o</code> keys at the same time and hit <code>enter</code></p></li>
+<li><p>Now, using your arrow keys, please replace <code>some-job-name</code> with <code>env-prep</code> and “write” the file again</p></li>
+<li><p>Great, we are ready to add our command! We will create a new environment, called <code>sra_prep</code>. In it we will install several pieces of software:</p>
+<ul>
+<li>sra-tools: this makes it easy to download raw data from NCBI’s SRA repository</li>
+<li>ncbi-datasets-cli: makes it easy to access genomes from NCBI’s GenBank and RefSeq</li>
+<li>parallel-fastq-dump: speeds up the initial unpacking of SRA data</li>
+<li>fastp: quality trimming tool (also provides lovely QC outputs!)</li>
+</ul>
+<p>Add the following to your script:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb17"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="ex">conda</span> create <span class="at">-n</span> sra_prep ncbi-datasets-cli sra-tools parallel-fastq-dump fastp <span class="at">-y</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Make sure to save!</p></li>
+<li><p>Check your script (below)</p>
+<div class="callout callout-style-default callout-tip callout-titled" title="Working Submission Script">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-13-contents" aria-controls="callout-13" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>Working Submission Script
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-13" class="callout-13-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb18"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="co">#!/bin/bash</span></span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH --job-name=some-job-name</span></span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH --nodes=1</span></span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH --ntasks=1</span></span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH -t 1:00:00</span></span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH --mem=8G</span></span>
+<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a><span class="ex">conda</span> create <span class="at">-n</span> sra_prep ncbi-datasets-cli sra-tools fastp parallel-fastq-dump <span class="at">-y</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</div>
+</div></li>
+<li><p>Exit the <code>pico</code> editor with <code>ctl</code>+<code>x</code></p></li>
+<li><p>Submitting the job to run is incredibly easy! You will just use <code>sbatch</code></p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb19"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="ex">sbatch</span> prep_conda_env.sh</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div></li>
+<li><p>Now we wait… You can track the progress in the queue!</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb20"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="ex">squeue</span> <span class="at">--m</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Above will show <strong><em>only</em></strong> your jobs, whereas the code below will show *<strong>all</strong> the jobs</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb21"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="ex">squeue</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div></li>
+<li><p>Once this is finished, you will need to make one more container! Updating the <code>prep_conda_env.sh</code> script, you will need to:</p></li>
+</ol>
+<ul class="task-list">
+<li><label><input type="checkbox">create a new container called <code>txpt_quant</code></label></li>
+<li><label><input type="checkbox">install <code>salmon</code></label></li>
+<li><label><input type="checkbox">install <code>star</code></label></li>
+</ul>
+<p>Make sure this is run before we meet next!</p>
+<ol start="11" type="1">
+<li><p>Once your job is finished, activate your container!</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb22"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="ex">conda</span> activate sra_prep</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>If it works, you will see <code>(sra_prep)</code> on the left-hand side of the terminal!</p></li>
+<li><p>Look at the <code>fastp</code> help message and all its options (so many)</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb23"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="ex">fastp</span> <span class="at">-h</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Using <code>-h</code> with <em>most</em> tools will bring up usage information along with all their options. It is a <del>lazy</del> nice way to make to sure that the software is installed!</p></li>
+<li><p>To exit the HPC, simply press <code>ctl</code>+<code>d</code> at the same time! You should see something like: <code>Connection to bora.sciclone.wm.edu closed.</code></p></li>
+</ol>
+<p>Disconnecting from the HPC is safe to do any time that a job is running or queued!</p>
+<p>In fact, that is the advantage of the HPC! You can queue some work then do something else (nap, eat some cookies, compose a bioinformatics sonnet, etc)</p>
+<p>You made it! Huzzah!</p>
+<hr>
+</section>
+</section>
+</section>
+<section id="quick-start-guide" class="level1">
+<h1>Quick Start Guide</h1>
+<hr>
+<p>On your own, why not summarize the commands and steps to access the HPC, move to your Biol404L directory, and get into your container!</p>
+<p>This is for your reference in the future, so you don’t have to slog through all the work above! Also, what a great way to practice this week :)</p>
+<p>Below, the steps are numbered with emtpy code blocks below them. Copy-paste your commands there!</p>
+<ol type="1">
+<li><p>Use <code>ssh</code> to log onto <code>bora</code></p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb24"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="ex">CODE</span> GOES HERE</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div></li>
+<li><p>Move into your Biol404L directory</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb25"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="ex">CODE</span> GOES HERE</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div></li>
+<li><p>Make two new directories, <code>raw_read_prep</code> and <code>transcript_quantification</code>, in your Biol404L directory</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb26"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="ex">CODE</span> GOES HERE</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div></li>
+<li><p>Activate your conda <code>sra_prep</code> container (make sure to load miniforge3 first)</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb27"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="ex">CODE</span> GOES HERE</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div></li>
+</ol>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

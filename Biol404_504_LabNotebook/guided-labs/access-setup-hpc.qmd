@@ -1,0 +1,409 @@
+---
+title: "Accessing W&M's HPC"
+author: "Your Name"
+date: 2026-08-31
+projects: "guided-learning"
+keywords:
+  - conda
+  - container
+  - hpc
+  - install
+---
+
+# Goals of the lab overall
+
+---
+
+The skills acquired in this lab class are crucial for bioinformatic tasks using molecular data, such as data analysis, scripting,
+and working in high-performance computing (HPC) environments. My hope is that you don’t just type the commands into the terminal and
+move on -- I would like you to ***think*** about what these commands are doing and start imagining how they could be useful in analyzing your own data.
+
+
+## For your success in the lab
+Each lab is inteded to be a reference point for you on various bioinformatic tasks.
+To make the most of these labs, please treat them like a **personal resource**, so
+adjust any specific commands accordingly.
+
+---
+
+# Lab Deep-dive
+
+---
+
+### Overview of today's lab
+This lab provides an introduction to UNIX/Linux operating systems and the fundamentals of connecting to remote servers in the context of bioinformatics.
+Throughout the labs, you will gain hands-on experience with essential *bash* commands, including file manipulation, and remote server access.
+
+I strongly suggest asking questions today while the exercise is fresh in your mind (and while your classmates are around to help you!).
+
+### Accessing the HPC at William & Mary
+- [ ] Access William & Mary's HPC
+- [ ] Make the first container on the HPC
+- [ ] Install some software into that container
+
+## Before we get started
+All of the labs for this course will be in QuartoMD format like this. You will be required to copy
+these to your own personal account and should be updating them! Your only formal grades for this course
+are based on the semester project. These guided-labs are there to help you build your familiarity with
+creating documentation, managing, data, reporting, and with all sorts of coding and scripting.
+
+Update and add things as you see fit! The more effort you place here, the more useful this will be for
+you!
+
+At times, I will include blocks to highlight snippets of code and/or get you to pause and think!
+
+::: {.callout-note title="Note"}
+There will be some questions in blue that you can answer.
+:::
+
+Some commands/instructions will have the potential to set you back, and require some deeper thought and/or carefulness.
+
+::: {.callout-caution title="Caution"}
+This will highlight things that may need a bit of caution before you proceed.
+
+This can include steps that may take a bit of time, or dangerous coding commands (e.g., those that remove *all* the files...)
+:::
+
+::: {.callout-warning title="Warning"}
+Sometimes, it may just be a simple 'warning'.
+:::
+
+The first few weeks of the lab will focus on getting you comfortable with the command-line, before we move into diverse analyses,
+including **differential gene expression** and **population genomics**. This will include step-by-step instructions using our examplar data sets.
+
+My goal is for you to feel comfortable enough to repeat the analyses on the data set of your choice!
+
+---
+
+## W&M's HPC server
+If you are using your own computer and want to *access the HPC from off-campus*,
+then you will need to download the W&M VPN client. See this [vpn installation link](https://www.wm.edu/offices/it/services/network/vpn/)
+for instructions. If you are connected to the W&M Wi-Fi you will not need to connect to the VPN.
+
+Once you are conneced to the W&M VPN, or using the W&M Wi-Fi, you will need to
+`ssh` into one of the sciclone's [subclusters](https://www.wm.edu/offices/it/services/researchcomputing/atwm/systemarchitecture/nodes/).
+SciClone is comprised of many different servers (subclusters), each with their own unique set of resources
+(i.e., high powered CPU's but low RAM). For most of the lab, we will be using *bora*.
+
+If using your own computer and you run into issues accessing the HPC, ask me for help if needed!
+
+
+### Overview of the UNIX operating system and directory structure
+1.	The core structure of Unix directories follows a hierarchical tree-like organization.
+The root directory serves as the top-level directory, and all other directories and files are organized beneath it
+2.	When you first connect to the server, you will be in your home directory by default.
+3.	Keep this structure in mind when you’re navigating through directories, especially once we start up/downloading data to your personal computers.
+4.	If you ever get confused where you are you can return to the home directory using `cd`
+
+## Connecting to `bora.sciclone.wm.edu`
+
+For both PCs and Macs, I recommend using the terminal to access SciClone.
+
+1. Open the Terminal software
+
+2. Connect to the remote server using `ssh` with your username:
+
+   ::: {.callout-note title="SSH into Bora"}
+   In the code below, replace `wm-username` with your W&M username!
+   ```bash
+   ssh wm-username@bora.sciclone.wm.edu
+   ```
+   :::
+
+   When you connect, you will be sitting in your `home directory` on the HPC!
+
+---
+
+## HPC Navigation
+Moving around the HPC uses common UNIX commands (I will provide a link to a useful cheatsheet).
+
+When you first log in, you are interacting the HPC's `head-node` (we will talk about this in class!).
+Additionally, the location where you first "land" onto the HPC is ***not where you will work!***
+
+Before we do too much, let's use some basic commands to see what is in our current folder, move around, and check where we are:
+
+1. It may be kind of weird to think like this, but the parts of your laptop that you interact with
+   really are just graphical representations of folders (directories).
+   This is no different on the HPC! We can see the contents of this directory really easily.
+   ```bash
+   ls
+   ```
+2. You should see a couple big directories, including `scr10`, `scr20`, `scr30`. These are the "scratch"
+   spaces, which is our playground!
+
+   ::: {.callout-caution title="Storage Limitations"}
+   **Do not** store files outside of `scr10` for this lab. Additionally, **do not** use `scr10` as
+   a semi-permanent storage space! It is purged every few months, so please treat it like a
+   shared kitchen and make sure we clean up after ourselves when we can!
+   :::
+
+3. Let's move into `scr10`, which is where we will do most of our work
+   ```bash
+   cd scr10
+   ```
+4. It can be easy to get lost on the HPC! Thankfully, we have the **best unix command ever**: `pwd`
+   ```bash
+   pwd
+   ```
+
+   ::: {.callout-note title="`pwd` is your Friend!"}
+   The output of `pwd` is the PATH to your current location. Each `/` marks a different
+   directory, so you can see ***exactly*** where you are.
+
+   This is referred to as the *absolute* PATH, which is just like having *exact* GPS coordinates for where you are!
+   :::
+
+5. If you ever get lost, and this will happen, simply using `cd` will bring you back to your `home directory`
+6. While we are here, let's make a folder the lab too
+   ```bash
+   mkdir Biol404L
+   ```
+7. Move into the new folder you made!
+
+   ::: {.callout-tip title="In case you get stumped" collapse="true"}
+   Use the `cd` command to move into your folder!
+   ```bash
+   cd Biol404L
+   ```
+   :::
+
+8. Use `ls` and `pwd` to see what is inside this folder and where you are on the HPC!
+9. Move back to your `home directory`
+
+   ::: {.callout-tip title="In case you get stumped" collapse="true"}
+   Use the `cd` by itself to move to your `home directory`!
+   ```bash
+   cd
+   ```
+   :::
+
+10. Soon we will be done moving around for a little bit, just a few more to do!
+ Let's move *directly* into our `Biol404L` directory, then use `pwd` to check!
+    ```bash
+    cd scr10/Biol404L
+    pwd
+    ```
+You made it!
+
+11. We can also move "backwards" to a less "nested" folder. We can use `..` to navigate
+    back a directory **relative** to where we are. Let's try it out and see what it looks like!
+    ```bash
+    cd ..
+    pwd
+    ```
+
+12. Move back into your `Biol404L` folder (see the prior commands/steps if you need help, before asking me or a neighbor)
+13. Let's move "backwards" two times at once!
+    ```bash
+    cd ../..
+    ```
+
+    ::: {.callout-note title="Did you notice?" collapse='true'}
+    To move back one directory, we use `..`. However, to move back **two** directories, we have to put a '/' in the middle!
+
+    You can do this as many times as needed, although it can get confusing...
+    :::
+14. Where are you now? How would you check?
+15. If you feel comfortable, make sure to move back into the Biol404L folder.
+16. One last task before we continue! Make a new directory called `Slurm_Scripts` then move into it!
+
+    ::: {.callout-tip title="In case you get stumped" collapse="true"}
+    You can use the `mkdir` command!
+    ```bash
+    mkdir Slurm_Scripts
+    cd Slurm_Scripts
+    ```
+    :::
+
+Great! You are now on your way to becoming a UNIX navigation expert.
+
+---
+
+## Dealing with Containers
+This next section will combine a fair bit of commands, which will become more familiar as you work in this lab.
+You are **not expected** to be an expert right away!
+
+### Loading Modules (Software)
+The HPC has quite a lot of software already installed on it. This varies by with subclusters
+you are working with (remember we are working on `bora`).
+
+::: {.callout-note title="Want to see the available software" collapse='true'}
+If you do, then run the following command:
+```bash
+module avail
+```
+:::
+
+We do want to use containers in this lab. To do so, we will be using [Anaconda](https://www.anaconda.com/)
+and [BioConda](https://bioconda.github.io/).
+
+1. Load the `miniforge` module
+   ```bash
+   module load miniforge3/24.9.2-0
+   ```
+2. Let's see what modules are loaded already
+   ```bash
+   module avail
+   ```
+   ::: {.callout-note title="What do you see?" collapse='true'}
+   You should notice that two pieces of software are highlighted!
+
+   SLURM and Miniforge3!
+   :::
+
+3. Miniforge3 is our `Anaconda` software. However, it does not natively connect or know where to find
+bioinformatic packages. Most of those are available through [BioConda](https://bioconda.github.io/).
+4. We will follow the BioConda setup instructions for `Conda` that are found on their website.
+   ```bash
+   conda config --add channels bioconda
+   conda config --add channels conda-forge
+   conda config --set channel_priority strict
+   ```
+
+Now we are almost ready to install software! Woohoo!
+
+It is worth noting that `conda` refers to their "containers" as environments. For our
+purposes, this is the same thing, so do not be alarmed!
+
+---
+
+## Submitting HPC Jobs
+In this part we will set up a job submission script. These are important to
+understand as we will be using them throughout the lab course.
+
+I have placed a template of one below (I will break down what each part means!):
+```bash
+#!/bin/bash
+#SBATCH --job-name=some-job-name
+#SBATCH --nodes=1
+#SBATCH --ntasks=1
+#SBATCH -t 1:00:00
+#SBATCH --mem=8G
+
+```
+
+It is nice to keep your job submission scripts together, staying organized is KEY!
+
+---
+
+### Making our first job-submission-script
+
+We will actually be submitting a job to make our container ***and*** install some software!
+The easiest option is to use an existing text editor in the terminal, `pico`
+
+1. Open a new file, `prep_conda_env.sh`, with `pico`
+   Your screen should be empty!
+
+2. Copy and paste the template for our job submission that was found in the last section
+3. To "write" the file quickly (equivalent of saving), press `ctl`+`o` keys at the same time
+and hit `enter`
+4. Now, using your arrow keys, please replace `some-job-name` with `env-prep` and "write" the file again
+5. Great, we are ready to add our command! We will create a new environment, called `sra_prep`.
+In it we will install several pieces of software:
+   - sra-tools: this makes it easy to download raw data from NCBI's SRA repository
+   - ncbi-datasets-cli: makes it easy to access genomes from NCBI's GenBank and RefSeq
+   - parallel-fastq-dump: speeds up the initial unpacking of SRA data
+   - fastp: quality trimming tool (also provides lovely QC outputs!)
+
+   Add the following to your script:
+   ```bash
+   conda create -n sra_prep ncbi-datasets-cli sra-tools parallel-fastq-dump fastp -y
+   ```
+
+   Make sure to save!
+
+6. Check your script (below)
+
+   ::: {.callout-tip title="Working Submission Script" collapse="true"}
+   ```bash
+   #!/bin/bash
+   #SBATCH --job-name=some-job-name
+   #SBATCH --nodes=1
+   #SBATCH --ntasks=1
+   #SBATCH -t 1:00:00
+   #SBATCH --mem=8G
+
+   conda create -n sra_prep ncbi-datasets-cli sra-tools fastp parallel-fastq-dump -y
+   ```
+   :::
+
+7. Exit the `pico` editor with `ctl`+`x`
+
+8. Submitting the job to run is incredibly easy! You will just use `sbatch`
+   ```bash
+   sbatch prep_conda_env.sh
+   ```
+9. Now we wait... You can track the progress in the queue!
+   ```bash
+   squeue --m
+   ```
+   Above will show ***only*** your jobs, whereas the code below will show ***all** the jobs
+   ```bash
+   squeue
+   ```
+10. Once this is finished, you will need to make one more container! Updating the
+`prep_conda_env.sh` script, you will need to:
+   - [ ] create a new container called `txpt_quant`
+   - [ ] install `salmon`
+   - [ ] install `star`
+
+   Make sure this is run before we meet next!
+
+11. Once your job is finished, activate your container!
+    ```bash
+    conda activate sra_prep
+    ```
+    If it works, you will see `(sra_prep)` on the left-hand side of the terminal!
+
+12. Look at the `fastp` help message and all its options (so many)
+    ```bash
+    fastp -h
+    ```
+
+    Using `-h` with *most* tools will bring up usage information along with all
+    their options. It is a ~~lazy~~ nice way to make to sure that the software is
+    installed!
+
+13. To exit the HPC, simply press `ctl`+`d` at the same time!
+    You should see something like: `Connection to bora.sciclone.wm.edu closed.`
+
+Disconnecting from the HPC is safe to do any time that a job is running or queued!
+
+In fact, that is the advantage of the HPC! You can queue some work then do something
+else (nap, eat some cookies, compose a bioinformatics sonnet, etc)
+
+You made it! Huzzah!
+
+---
+
+# Quick Start Guide
+
+---
+
+On your own, why not summarize the commands and steps to access the HPC,
+move to your Biol404L directory, and get into your container!
+
+This is for your reference in the future, so you don't have to slog through all the work above!
+Also, what a great way to practice this week :)
+
+Below, the steps are numbered with emtpy code blocks below them. Copy-paste your commands there!
+
+1. Use `ssh` to log onto `bora`
+   ```bash
+   CODE GOES HERE
+   ```
+
+2. Move into your Biol404L directory
+   ```bash
+   CODE GOES HERE
+   ```
+
+3. Make two new directories, `raw_read_prep` and `transcript_quantification`, in your Biol404L directory
+   ```bash
+   CODE GOES HERE
+   ```
+
+4. Activate your conda `sra_prep` container (make sure to load miniforge3 first)
+   ```bash
+   CODE GOES HERE
+   ```

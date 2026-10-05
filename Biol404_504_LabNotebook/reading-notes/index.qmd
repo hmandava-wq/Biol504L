@@ -1,0 +1,24 @@
+---
+title: "Reading notes"
+format: html
+listing:
+  contents:
+    - "*.qmd"
+  type: table
+  fields: [title, author, year, projects, keywords]
+  filter-ui: [title, author, year, projects, keywords]
+---
+
+The function `quartoutils::make_reading_notes()` makes it easy to create and edit a file to jot down reading notes.  
+Specifically, this function creates a new file in the `reading-notes` subdirectory of the root, using the file name provided through an argument. 
+If such a file already exists, this function quits with an error. 
+The file also automatically gets added to a table of all such files, which is accessible from the "Reading Notes" landing page of the website.
+This file is also added to the "reading notes" section of each project landing page; this functionality is demonstrated in the video below. 
+  
+:::{.callout-note collapse="true"}
+
+### Video instructions to create reading notes
+
+{{< video ../media/reading-notes-video.mp4 >}}
+
+:::

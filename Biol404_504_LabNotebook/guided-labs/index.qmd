@@ -1,0 +1,14 @@
+---
+title: "Guided Labs"
+format: html
+listing:
+  contents:
+    - "*.qmd"
+  type: table
+  fields: [date, title, projects, keywords]
+  filter-ui: [date, title, projects, keywords]
+---
+
+Each week, add the new set of guided lab pages. These will be worked on together and are to serve as
+a guided tutorial. There will be places to make updates to ***customize*** commands to your files,
+PATHs, and anything specific to your computer.

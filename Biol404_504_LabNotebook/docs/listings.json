@@ -1,0 +1,27 @@
+[
+  {
+    "listing": "/reading-notes/index.html",
+    "items": [
+      "/reading-notes/demopaper1.html"
+    ]
+  },
+  {
+    "listing": "/projects/Semester-Project/index.html",
+    "items": [
+      "/projects/Semester-Project/idea-note1.html"
+    ]
+  },
+  {
+    "listing": "/guided-labs/index.html",
+    "items": [
+      "/guided-labs/access-setup-hpc.html",
+      "/guided-labs/connecting-with-github.html"
+    ]
+  },
+  {
+    "listing": "/weekly-notes/index.html",
+    "items": [
+      "/weekly-notes/week-of-2026-08-31.html"
+    ]
+  }
+]

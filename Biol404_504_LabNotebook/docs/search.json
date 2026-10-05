@@ -1,0 +1,240 @@
+[
+  {
+    "objectID": "reading-notes/index.html",
+    "href": "reading-notes/index.html",
+    "title": "Reading notes",
+    "section": "",
+    "text": "The function quartoutils::make_reading_notes() makes it easy to create and edit a file to jot down reading notes.\nSpecifically, this function creates a new file in the reading-notes subdirectory of the root, using the file name provided through an argument. If such a file already exists, this function quits with an error. The file also automatically gets added to a table of all such files, which is accessible from the “Reading Notes” landing page of the website. This file is also added to the “reading notes” section of each project landing page; this functionality is demonstrated in the video below.\n\n\n\n\n\n\nNoteVideo instructions to create reading notes\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n   \n    \n    \n      Order By\n      Default\n      \n        Title\n      \n      \n        Author\n      \n    \n  \n    \n      \n      \n    \n\n\n\n\n\n\nTitle\n\n\n\nAuthor\n\n\n\nyear\n\n\n\nprojects\n\n\n\nkeywords\n\n\n\n\n\n\n\n\nDemo paper title\n\n\nDemo Author\n\n\n2020\n\n\nproject-1\n\n\n \n\n\n\n\n\n\nNo matching items"
+  },
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "YOUR-NAME’S Lab Notebook",
+    "section": "",
+    "text": "Using the lab notebook\nThe goal for this repository/notebook is to serve as a template that you can modify to establish your very own digital lab notebook! Click around on the tabs above to explore some of the functionality of this template site.\nThis notebook is yours and is to track the work you do in the Introduction to Bioinformatics Lab (Fall - 2026). It is critical that this stays up to date, as it acts as the predominant means to track lab work for grading.\nTo keep your notebook up-to-date, you will be relying on GitHub, which is an amazing repository for handling diverse bioinformatic tasks, including the maintenance of your notebook as a website (woo!). Building familiarity with Git is one of the most important tasks in learning bioinformatics.\nBelow is how to set up your notebook initially!\n\n\nSetting up your notebook\n\n\n\n\n\n\nNotePreparing R GUI for Your Notebook\n\n\n\n\n\nBefore the rendering of your notebook will work, we need to install R and R-Studio.\n\nFrom your preferred browser, download and install R\nAfterwards install R-Studio\n\nThen you are set!\n\n\n\n\n\n\n\n\n\nNoteInstalling Quarto Through the CLI with Pixi\n\n\n\n\n\nWhile the R-Studio approach works well, especially as we will use R in this lab, if you are interested in managing your notebook solely through the command-line, you can follow the steps below. If you choose this approach, I recommend using Pixi, a workspace manager (like containers), to install and manage the necessary software. This works, but is a less intuitive experience and I do not totally recommend it.\n\nOpen up your terminal (or git-bash)\nFollow the installation information for Pixi for your computer pixi installation\nOn your Desktop, make a new folder called Pixi_Envs\nIn your terminal, move to the newly created folder\nMake another new folder called quarto, then move inside there too!\ncreate our quarto workspace and install the necessary tools\npixi init\npixi add quarto r\nyou may be asked to pick a mirror to install R. If so, just type 63 and hit enter\nGo ahead and “register” the workspace\npixi workspace register\nNow you can activate this workspace from anywhere on your computer! Below is the code to do so:\npixi shell -w quarto\n\n\n\n\n\n\nVerifying that the notebook builds on your system\nBefore moving on, let’s verify that the lab notebook can render properly on your local system.\n\n\n\n\n\n\nNoteRStudio Rendering\n\n\n\n\n\n\nLoad up R-RStudio\nOpen the labnotebook.Rproj in your lab notebook folder as an R-project (with R-studio)\nIF you have note already installed the rmarkdown package with R, let’s do that now. Otherwse, skip this step!\ninstall.packages('rmarkdown')\nLoad the ‘rmarkdown’ package\nlibrary('rmarkdown')\nOnce ready, all you have to do is render your notebook (i.e. make the website!). There are two ways to do this:\n\nIn the upper right R-Studio pane, is the Build tab. Click on this, then the Render Website button!\nAll you have to do is type ctl+shift+b\n\n\n\n\n\n\n\n\n\n\n\nNoteCommand-line Rendering\n\n\n\n\n\n\nMake sure that you have used the terminal commands to move into your lab notebook folder\nEnsure that your quarto workspace is active. If it is not, run the following command:\npixi shell -w quarto\nRender your HTML files\nquarto render\nYour updated files will be found in the _site folder. Go ahead and open the index.html file, which will show you what your notebook updates will look like.\n\n\n\n\nEnjoy looking at the local version of your notebook! The steps to interact with GitHub to publish your notebook, can be found in the Guided Labs tab of your notebook."
+  },
+  {
+    "objectID": "weekly-notes/week-of-2026-08-31.html",
+    "href": "weekly-notes/week-of-2026-08-31.html",
+    "title": "Week of August 31, 2026",
+    "section": "",
+    "text": "Learn to use the digital notebook\nSet up GitHub repository and notebook website\nAccess William & Mary’s HPC\nMake the first container on the HPC\nInstall some software into that container"
+  },
+  {
+    "objectID": "weekly-notes/week-of-2026-08-31.html#goals-for-the-week",
+    "href": "weekly-notes/week-of-2026-08-31.html#goals-for-the-week",
+    "title": "Week of August 31, 2026",
+    "section": "",
+    "text": "Learn to use the digital notebook\nSet up GitHub repository and notebook website\nAccess William & Mary’s HPC\nMake the first container on the HPC\nInstall some software into that container"
+  },
+  {
+    "objectID": "weekly-notes/week-of-2026-08-31.html#monday",
+    "href": "weekly-notes/week-of-2026-08-31.html#monday",
+    "title": "Week of August 31, 2026",
+    "section": "Monday",
+    "text": "Monday"
+  },
+  {
+    "objectID": "weekly-notes/week-of-2026-08-31.html#tuesday",
+    "href": "weekly-notes/week-of-2026-08-31.html#tuesday",
+    "title": "Week of August 31, 2026",
+    "section": "Tuesday",
+    "text": "Tuesday\n\nLearn more about bioinformatics!"
+  },
+  {
+    "objectID": "weekly-notes/week-of-2026-08-31.html#wednesday",
+    "href": "weekly-notes/week-of-2026-08-31.html#wednesday",
+    "title": "Week of August 31, 2026",
+    "section": "Wednesday",
+    "text": "Wednesday"
+  },
+  {
+    "objectID": "weekly-notes/week-of-2026-08-31.html#thursday",
+    "href": "weekly-notes/week-of-2026-08-31.html#thursday",
+    "title": "Week of August 31, 2026",
+    "section": "Thursday",
+    "text": "Thursday\n\nThink extra deeply about bioinformatics"
+  },
+  {
+    "objectID": "weekly-notes/week-of-2026-08-31.html#friday",
+    "href": "weekly-notes/week-of-2026-08-31.html#friday",
+    "title": "Week of August 31, 2026",
+    "section": "Friday",
+    "text": "Friday"
+  },
+  {
+    "objectID": "projects/Semester-Project/index.html",
+    "href": "projects/Semester-Project/index.html",
+    "title": "Semester-Project",
+    "section": "",
+    "text": "Briefly describe which dataset and big bioinformatic tasks that best describe the project!\nThis is up to you to fill out when you are ready. It should also be updated as often as needed as the scope changes!"
+  },
+  {
+    "objectID": "projects/Semester-Project/index.html#about-this-project",
+    "href": "projects/Semester-Project/index.html#about-this-project",
+    "title": "Semester-Project",
+    "section": "",
+    "text": "Briefly describe which dataset and big bioinformatic tasks that best describe the project!\nThis is up to you to fill out when you are ready. It should also be updated as often as needed as the scope changes!"
+  },
+  {
+    "objectID": "projects/Semester-Project/index.html#concept-notes-and-other-ideas",
+    "href": "projects/Semester-Project/index.html#concept-notes-and-other-ideas",
+    "title": "Semester-Project",
+    "section": "Concept notes and other ideas",
+    "text": "Concept notes and other ideas\n\n\n\n\n\n\nDate\n\n\n\nTitle\n\n\n\n\n\n\n\n\nAug 28, 2026\n\n\nIdea note 1\n\n\n\n\n\n\nNo matching items"
+  },
+  {
+    "objectID": "projects/Semester-Project/index.html#reading-notes",
+    "href": "projects/Semester-Project/index.html#reading-notes",
+    "title": "Semester-Project",
+    "section": "Reading notes",
+    "text": "Reading notes\n\n\n   \n    \n    \n      Order By\n      Default\n      \n        Title\n      \n      \n        Author\n      \n    \n  \n    \n      \n      \n    \n\n\n\n\nyear\nTitle\nAuthor\n\n\n\n\n\nNo matching items"
+  },
+  {
+    "objectID": "projects/Semester-Project/index.html#weeks-in-which-i-worked-on-this-project",
+    "href": "projects/Semester-Project/index.html#weeks-in-which-i-worked-on-this-project",
+    "title": "Semester-Project",
+    "section": "Weeks in which I worked on this project",
+    "text": "Weeks in which I worked on this project\n\n\n\n\nTitle\nprojects\nkeywords\n\n\n\n\n\nNo matching items"
+  },
+  {
+    "objectID": "guided-labs/index.html",
+    "href": "guided-labs/index.html",
+    "title": "Guided Labs",
+    "section": "",
+    "text": "Each week, add the new set of guided lab pages. These will be worked on together and are to serve as a guided tutorial. There will be places to make updates to customize commands to your files, PATHs, and anything specific to your computer.\n\n\n\n\n\n\n   \n    \n    \n      Order By\n      Default\n      \n        Date - Oldest\n      \n      \n        Date - Newest\n      \n      \n        Title\n      \n    \n  \n    \n      \n      \n    \n\n\n\n\n\n\nDate\n\n\n\nTitle\n\n\n\nprojects\n\n\n\nkeywords\n\n\n\n\n\n\n\n\nAug 31, 2026\n\n\nAccessing W&M’s HPC\n\n\nguided-learning\n\n\nconda, container, hpc, install\n\n\n\n\n\n\nAug 31, 2026\n\n\nWorking with GitHub\n\n\nguided-learning\n\n\ngithub, website\n\n\n\n\n\n\nNo matching items"
+  },
+  {
+    "objectID": "guided-labs/access-setup-hpc.html",
+    "href": "guided-labs/access-setup-hpc.html",
+    "title": "Accessing W&M’s HPC",
+    "section": "",
+    "text": "The skills acquired in this lab class are crucial for bioinformatic tasks using molecular data, such as data analysis, scripting, and working in high-performance computing (HPC) environments. My hope is that you don’t just type the commands into the terminal and move on – I would like you to think about what these commands are doing and start imagining how they could be useful in analyzing your own data.\n\n\nEach lab is inteded to be a reference point for you on various bioinformatic tasks. To make the most of these labs, please treat them like a personal resource, so adjust any specific commands accordingly."
+  },
+  {
+    "objectID": "guided-labs/access-setup-hpc.html#for-your-success-in-the-lab",
+    "href": "guided-labs/access-setup-hpc.html#for-your-success-in-the-lab",
+    "title": "Accessing W&M’s HPC",
+    "section": "",
+    "text": "Each lab is inteded to be a reference point for you on various bioinformatic tasks. To make the most of these labs, please treat them like a personal resource, so adjust any specific commands accordingly."
+  },
+  {
+    "objectID": "guided-labs/access-setup-hpc.html#before-we-get-started",
+    "href": "guided-labs/access-setup-hpc.html#before-we-get-started",
+    "title": "Accessing W&M’s HPC",
+    "section": "Before we get started",
+    "text": "Before we get started\nAll of the labs for this course will be in QuartoMD format like this. You will be required to copy these to your own personal account and should be updating them! Your only formal grades for this course are based on the semester project. These guided-labs are there to help you build your familiarity with creating documentation, managing, data, reporting, and with all sorts of coding and scripting.\nUpdate and add things as you see fit! The more effort you place here, the more useful this will be for you!\nAt times, I will include blocks to highlight snippets of code and/or get you to pause and think!\n\n\n\n\n\n\nNoteNote\n\n\n\nThere will be some questions in blue that you can answer.\n\n\nSome commands/instructions will have the potential to set you back, and require some deeper thought and/or carefulness.\n\n\n\n\n\n\nCautionCaution\n\n\n\nThis will highlight things that may need a bit of caution before you proceed.\nThis can include steps that may take a bit of time, or dangerous coding commands (e.g., those that remove all the files…)\n\n\n\n\n\n\n\n\nWarningWarning\n\n\n\nSometimes, it may just be a simple ‘warning’.\n\n\nThe first few weeks of the lab will focus on getting you comfortable with the command-line, before we move into diverse analyses, including differential gene expression and population genomics. This will include step-by-step instructions using our examplar data sets.\nMy goal is for you to feel comfortable enough to repeat the analyses on the data set of your choice!"
+  },
+  {
+    "objectID": "guided-labs/access-setup-hpc.html#wms-hpc-server",
+    "href": "guided-labs/access-setup-hpc.html#wms-hpc-server",
+    "title": "Accessing W&M’s HPC",
+    "section": "W&M’s HPC server",
+    "text": "W&M’s HPC server\nIf you are using your own computer and want to access the HPC from off-campus, then you will need to download the W&M VPN client. See this vpn installation link for instructions. If you are connected to the W&M Wi-Fi you will not need to connect to the VPN.\nOnce you are conneced to the W&M VPN, or using the W&M Wi-Fi, you will need to ssh into one of the sciclone’s subclusters. SciClone is comprised of many different servers (subclusters), each with their own unique set of resources (i.e., high powered CPU’s but low RAM). For most of the lab, we will be using bora.\nIf using your own computer and you run into issues accessing the HPC, ask me for help if needed!\n\nOverview of the UNIX operating system and directory structure\n\nThe core structure of Unix directories follows a hierarchical tree-like organization. The root directory serves as the top-level directory, and all other directories and files are organized beneath it\nWhen you first connect to the server, you will be in your home directory by default.\nKeep this structure in mind when you’re navigating through directories, especially once we start up/downloading data to your personal computers.\nIf you ever get confused where you are you can return to the home directory using cd"
+  },
+  {
+    "objectID": "guided-labs/access-setup-hpc.html#connecting-to-bora.sciclone.wm.edu",
+    "href": "guided-labs/access-setup-hpc.html#connecting-to-bora.sciclone.wm.edu",
+    "title": "Accessing W&M’s HPC",
+    "section": "Connecting to bora.sciclone.wm.edu",
+    "text": "Connecting to bora.sciclone.wm.edu\nFor both PCs and Macs, I recommend using the terminal to access SciClone.\n\nOpen the Terminal software\nConnect to the remote server using ssh with your username:\n\n\n\n\n\n\nNoteSSH into Bora\n\n\n\nIn the code below, replace wm-username with your W&M username!\nssh wm-username@bora.sciclone.wm.edu\n\n\nWhen you connect, you will be sitting in your home directory on the HPC!"
+  },
+  {
+    "objectID": "guided-labs/access-setup-hpc.html#hpc-navigation",
+    "href": "guided-labs/access-setup-hpc.html#hpc-navigation",
+    "title": "Accessing W&M’s HPC",
+    "section": "HPC Navigation",
+    "text": "HPC Navigation\nMoving around the HPC uses common UNIX commands (I will provide a link to a useful cheatsheet).\nWhen you first log in, you are interacting the HPC’s head-node (we will talk about this in class!). Additionally, the location where you first “land” onto the HPC is not where you will work!\nBefore we do too much, let’s use some basic commands to see what is in our current folder, move around, and check where we are:\n\nIt may be kind of weird to think like this, but the parts of your laptop that you interact with really are just graphical representations of folders (directories). This is no different on the HPC! We can see the contents of this directory really easily.\nls\nYou should see a couple big directories, including scr10, scr20, scr30. These are the “scratch” spaces, which is our playground!\n\n\n\n\n\n\nCautionStorage Limitations\n\n\n\nDo not store files outside of scr10 for this lab. Additionally, do not use scr10 as a semi-permanent storage space! It is purged every few months, so please treat it like a shared kitchen and make sure we clean up after ourselves when we can!\n\n\nLet’s move into scr10, which is where we will do most of our work\ncd scr10\nIt can be easy to get lost on the HPC! Thankfully, we have the best unix command ever: pwd\npwd\n\n\n\n\n\n\nNotepwd is your Friend!\n\n\n\nThe output of pwd is the PATH to your current location. Each / marks a different directory, so you can see exactly where you are.\nThis is referred to as the absolute PATH, which is just like having exact GPS coordinates for where you are!\n\n\nIf you ever get lost, and this will happen, simply using cd will bring you back to your home directory\nWhile we are here, let’s make a folder the lab too\nmkdir Biol404L\nMove into the new folder you made!\n\n\n\n\n\n\nTipIn case you get stumped\n\n\n\n\n\nUse the cd command to move into your folder!\ncd Biol404L\n\n\n\nUse ls and pwd to see what is inside this folder and where you are on the HPC!\nMove back to your home directory\n\n\n\n\n\n\nTipIn case you get stumped\n\n\n\n\n\nUse the cd by itself to move to your home directory!\ncd\n\n\n\nSoon we will be done moving around for a little bit, just a few more to do! Let’s move directly into our Biol404L directory, then use pwd to check!\ncd scr10/Biol404L\npwd\nYou made it!\nWe can also move “backwards” to a less “nested” folder. We can use .. to navigate back a directory relative to where we are. Let’s try it out and see what it looks like!\ncd ..\npwd\nMove back into your Biol404L folder (see the prior commands/steps if you need help, before asking me or a neighbor)\nLet’s move “backwards” two times at once!\ncd ../..\n\n\n\n\n\n\nNoteDid you notice?\n\n\n\n\n\nTo move back one directory, we use ... However, to move back two directories, we have to put a ‘/’ in the middle!\nYou can do this as many times as needed, although it can get confusing…\n\n\n\nWhere are you now? How would you check?\nIf you feel comfortable, make sure to move back into the Biol404L folder.\nOne last task before we continue! Make a new directory called Slurm_Scripts then move into it!\n\n\n\n\n\n\nTipIn case you get stumped\n\n\n\n\n\nYou can use the mkdir command!\nmkdir Slurm_Scripts\ncd Slurm_Scripts\n\n\n\n\nGreat! You are now on your way to becoming a UNIX navigation expert."
+  },
+  {
+    "objectID": "guided-labs/access-setup-hpc.html#dealing-with-containers",
+    "href": "guided-labs/access-setup-hpc.html#dealing-with-containers",
+    "title": "Accessing W&M’s HPC",
+    "section": "Dealing with Containers",
+    "text": "Dealing with Containers\nThis next section will combine a fair bit of commands, which will become more familiar as you work in this lab. You are not expected to be an expert right away!\n\nLoading Modules (Software)\nThe HPC has quite a lot of software already installed on it. This varies by with subclusters you are working with (remember we are working on bora).\n\n\n\n\n\n\nNoteWant to see the available software\n\n\n\n\n\nIf you do, then run the following command:\nmodule avail\n\n\n\nWe do want to use containers in this lab. To do so, we will be using Anaconda and BioConda.\n\nLoad the miniforge module\nmodule load miniforge3/24.9.2-0\nLet’s see what modules are loaded already\nmodule avail\n\n\n\n\n\n\nNoteWhat do you see?\n\n\n\n\n\nYou should notice that two pieces of software are highlighted!\nSLURM and Miniforge3!\n\n\n\nMiniforge3 is our Anaconda software. However, it does not natively connect or know where to find bioinformatic packages. Most of those are available through BioConda.\nWe will follow the BioConda setup instructions for Conda that are found on their website.\nconda config --add channels bioconda\nconda config --add channels conda-forge\nconda config --set channel_priority strict\n\nNow we are almost ready to install software! Woohoo!\nIt is worth noting that conda refers to their “containers” as environments. For our purposes, this is the same thing, so do not be alarmed!"
+  },
+  {
+    "objectID": "guided-labs/access-setup-hpc.html#submitting-hpc-jobs",
+    "href": "guided-labs/access-setup-hpc.html#submitting-hpc-jobs",
+    "title": "Accessing W&M’s HPC",
+    "section": "Submitting HPC Jobs",
+    "text": "Submitting HPC Jobs\nIn this part we will set up a job submission script. These are important to understand as we will be using them throughout the lab course.\nI have placed a template of one below (I will break down what each part means!):\n#!/bin/bash\n#SBATCH --job-name=some-job-name\n#SBATCH --nodes=1\n#SBATCH --ntasks=1\n#SBATCH -t 1:00:00\n#SBATCH --mem=8G\nIt is nice to keep your job submission scripts together, staying organized is KEY!\n\n\nMaking our first job-submission-script\nWe will actually be submitting a job to make our container and install some software! The easiest option is to use an existing text editor in the terminal, pico\n\nOpen a new file, prep_conda_env.sh, with pico Your screen should be empty!\nCopy and paste the template for our job submission that was found in the last section\nTo “write” the file quickly (equivalent of saving), press ctl+o keys at the same time and hit enter\nNow, using your arrow keys, please replace some-job-name with env-prep and “write” the file again\nGreat, we are ready to add our command! We will create a new environment, called sra_prep. In it we will install several pieces of software:\n\nsra-tools: this makes it easy to download raw data from NCBI’s SRA repository\nncbi-datasets-cli: makes it easy to access genomes from NCBI’s GenBank and RefSeq\nparallel-fastq-dump: speeds up the initial unpacking of SRA data\nfastp: quality trimming tool (also provides lovely QC outputs!)\n\nAdd the following to your script:\nconda create -n sra_prep ncbi-datasets-cli sra-tools parallel-fastq-dump fastp -y\nMake sure to save!\nCheck your script (below)\n\n\n\n\n\n\nTipWorking Submission Script\n\n\n\n\n\n#!/bin/bash\n#SBATCH --job-name=some-job-name\n#SBATCH --nodes=1\n#SBATCH --ntasks=1\n#SBATCH -t 1:00:00\n#SBATCH --mem=8G\n\nconda create -n sra_prep ncbi-datasets-cli sra-tools fastp parallel-fastq-dump -y\n\n\n\nExit the pico editor with ctl+x\nSubmitting the job to run is incredibly easy! You will just use sbatch\nsbatch prep_conda_env.sh\nNow we wait… You can track the progress in the queue!\nsqueue --m\nAbove will show only your jobs, whereas the code below will show *all the jobs\nsqueue\nOnce this is finished, you will need to make one more container! Updating the prep_conda_env.sh script, you will need to:\n\n\ncreate a new container called txpt_quant\ninstall salmon\ninstall star\n\nMake sure this is run before we meet next!\n\nOnce your job is finished, activate your container!\nconda activate sra_prep\nIf it works, you will see (sra_prep) on the left-hand side of the terminal!\nLook at the fastp help message and all its options (so many)\nfastp -h\nUsing -h with most tools will bring up usage information along with all their options. It is a lazy nice way to make to sure that the software is installed!\nTo exit the HPC, simply press ctl+d at the same time! You should see something like: Connection to bora.sciclone.wm.edu closed.\n\nDisconnecting from the HPC is safe to do any time that a job is running or queued!\nIn fact, that is the advantage of the HPC! You can queue some work then do something else (nap, eat some cookies, compose a bioinformatics sonnet, etc)\nYou made it! Huzzah!"
+  },
+  {
+    "objectID": "guided-labs/connecting-with-github.html",
+    "href": "guided-labs/connecting-with-github.html",
+    "title": "Working with GitHub",
+    "section": "",
+    "text": "The skills acquired in this lab class are crucial for bioinformatic tasks using molecular data, such as data analysis, scripting, and working in high-performance computing (HPC) environments. My hope is that you don’t just type the commands into the terminal and move on – I would like you to think about what these commands are doing and start imagining how they could be useful in analyzing your own data.\n\n\nEach lab is inteded to be a reference point for you on various bioinformatic tasks. To make the most of these labs, please treat them like a personal resource, so adjust any specific commands accordingly.\n\n\n\nThis lab provides a reference point for working with GitHub. There will be a recording of how to prepare the repository for this lab and we will go through this again as we write our own codes to document our progress on the lab’s projects.\nThis guided-lab entry is for you to build and work with. I have provided the bones, but you should spend today’s lab updating, checking the changes, and uploading to GitHub when you are happy. The more work you put here early, the more comfortable it will be!\nAs this particular lab page, represent your notes, please put as much or as little as you want. I cannot stress it enough, that you are in charge of this and you should not be asking others for help each week for updating your notebook. I expect it the first couple weeks, but your notes here will help prevent that!\nI strongly suggest asking questions today while the exercise is fresh in your mind (and while your classmates are around to help you!)."
+  },
+  {
+    "objectID": "guided-labs/connecting-with-github.html#for-your-success-in-the-lab",
+    "href": "guided-labs/connecting-with-github.html#for-your-success-in-the-lab",
+    "title": "Working with GitHub",
+    "section": "",
+    "text": "Each lab is inteded to be a reference point for you on various bioinformatic tasks. To make the most of these labs, please treat them like a personal resource, so adjust any specific commands accordingly.\n\n\n\nThis lab provides a reference point for working with GitHub. There will be a recording of how to prepare the repository for this lab and we will go through this again as we write our own codes to document our progress on the lab’s projects.\nThis guided-lab entry is for you to build and work with. I have provided the bones, but you should spend today’s lab updating, checking the changes, and uploading to GitHub when you are happy. The more work you put here early, the more comfortable it will be!\nAs this particular lab page, represent your notes, please put as much or as little as you want. I cannot stress it enough, that you are in charge of this and you should not be asking others for help each week for updating your notebook. I expect it the first couple weeks, but your notes here will help prevent that!\nI strongly suggest asking questions today while the exercise is fresh in your mind (and while your classmates are around to help you!)."
+  },
+  {
+    "objectID": "guided-labs/connecting-with-github.html#setting-up-and-managing-your-github",
+    "href": "guided-labs/connecting-with-github.html#setting-up-and-managing-your-github",
+    "title": "Working with GitHub",
+    "section": "Setting up and managing your GitHub!",
+    "text": "Setting up and managing your GitHub!\nWe are going to first “clone” the repository you made by hand. Afterwards, we will add some files to it, upload it back to GitHub with those new files (yay backups), and setup your lab notebook webpage!\n\nDownload your empty lab reposity from GitHub (only need to do this the first day)\nCODE GOES HERE\nDownload the files from BlackBoard and put them into the empty repository on your computer\nUsing your terminal (or git-bash), move into this folder on your computer.\nRender them quickly using R-Studio (or the terminal)\nCheck if you have local updates that are not found in the remote repository\nCODE GOES HERE\nSo many updates… Well GitHub has three big stages: adding changes, committing those changes (part of version control), then “pushing” those changes to the remote host (GitHub).\nAdding your changes to “stage” them to upload\nCODE GOES HERE\nCommitting those changes before pushing them!\nCODE GOES HERE\nPushing those changes\nCODE GOES HERE\nPlease do not store your git-token here! This will be publicly available. Keep it safe on your computer (possibly backup somewhere else)\nCheck that the files are now in your repository"
+  },
+  {
+    "objectID": "guided-labs/connecting-with-github.html#setting-up-your-notebook-site",
+    "href": "guided-labs/connecting-with-github.html#setting-up-your-notebook-site",
+    "title": "Working with GitHub",
+    "section": "Setting up your notebook site!",
+    "text": "Setting up your notebook site!\nPut your notes here!!!\nWait for it to load … (so hard to do)\nMake sure to email your prof about your link!"
+  },
+  {
+    "objectID": "guided-labs/connecting-with-github.html#practing-with-github-and-editing",
+    "href": "guided-labs/connecting-with-github.html#practing-with-github-and-editing",
+    "title": "Working with GitHub",
+    "section": "Practing with GitHub and Editing!",
+    "text": "Practing with GitHub and Editing!\nNow, try and upload all your cool changes to GitHub!\nPut really good notes here!!!\nRemember the order is:\n\nMake new posts, edits, whatever you want\nRender them and check locally!\nUse git commands to add, commit, and push your changes\nWait patiently\nCheck them online!"
+  },
+  {
+    "objectID": "projects/Semester-Project/idea-note1.html",
+    "href": "projects/Semester-Project/idea-note1.html",
+    "title": "Idea note 1",
+    "section": "",
+    "text": "Great place to brainstorm next steps and keep track of what you may want to test or explore more!\n\n\n\nTasks you may want to be able to tackle!\n\nMake a new post\nMake edits to an existing note\nStart your digital lab notebook and access online!"
+  },
+  {
+    "objectID": "projects/Semester-Project/idea-note1.html#thoughts-about-project",
+    "href": "projects/Semester-Project/idea-note1.html#thoughts-about-project",
+    "title": "Idea note 1",
+    "section": "",
+    "text": "Great place to brainstorm next steps and keep track of what you may want to test or explore more!\n\n\n\nTasks you may want to be able to tackle!\n\nMake a new post\nMake edits to an existing note\nStart your digital lab notebook and access online!"
+  },
+  {
+    "objectID": "projects/how-to.html",
+    "href": "projects/how-to.html",
+    "title": "How to create new projects",
+    "section": "",
+    "text": "The function qurtoutils::make_project(projectname = \"...\") simplifies the process of creating a new project subdirectory. A new directory is created under the projects/ directory, using the name specified in the argument projectname.\nThe project has the following directory structure:\n\nfs::dir_tree(\"Semester-Project\")\n\nSemester-Project\n├── idea-note1.html\n├── idea-note1.qmd\n├── index-listing.json\n├── index.html\n└── index.qmd\n\n\nThe index.qmd file for the project will automatically search for weekly meeting notes and reading notes that have the same projects tag as the name for the newly made project."
+  },
+  {
+    "objectID": "weekly-notes/index.html",
+    "href": "weekly-notes/index.html",
+    "title": "Weekly notes",
+    "section": "",
+    "text": "The function quartoutils::weekly_notes() makes it easy to create and edit a weekly notes file. Specifically, if a weekly notes file for the present week does not exist1, quartoutils::weekly_notes() will make this file, using a pre-determined template. If such a file already exists, quartoutils::weekly_notes() simply opens this file for you to edit. The file also automatically gets added to a table of all such files, which is accessible from the “Weekly Notes” landing page of the website. This functionality is demonstrated in the video below."
+  },
+  {
+    "objectID": "weekly-notes/index.html#footnotes",
+    "href": "weekly-notes/index.html#footnotes",
+    "title": "Weekly notes",
+    "section": "Footnotes",
+    "text": "Footnotes\n\n\ni.e. a file with the name week-of-YYYY-MM-DD.qmd, where yyyy-mm-dd is the year-month-date of the Monday of the current week↩︎"
+  },
+  {
+    "objectID": "reading-notes/demopaper1.html",
+    "href": "reading-notes/demopaper1.html",
+    "title": "Demo paper title",
+    "section": "",
+    "text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis sagittis posuere ligula sit amet lacinia. Duis dignissim pellentesque magna, rhoncus congue sapien finibus mollis. Ut eu sem laoreet, vehicula ipsum in, convallis erat. Vestibulum magna sem, blandit pulvinar augue sit amet, auctor malesuada sapien. Nullam faucibus leo eget eros hendrerit, non laoreet ipsum lacinia. Curabitur cursus diam elit, non tempus ante volutpat a. Quisque hendrerit blandit purus non fringilla. Integer sit amet elit viverra ante dapibus semper. Vestibulum viverra rutrum enim, at luctus enim posuere eu. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus."
+  }
+]

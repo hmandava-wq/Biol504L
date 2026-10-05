@@ -1,0 +1,26 @@
+---
+title: "Week of August 31, 2026"
+author: "Your Name"
+date: 2026-08-31
+projects:
+---
+
+## Goals for the week
+
+- [ ] Learn to use the digital notebook
+- [ ] Set up GitHub repository and notebook website
+- [ ] Access William & Mary's HPC
+- [ ] Make the first container on the HPC
+- [ ] Install some software into that container
+
+## Monday
+
+## Tuesday
+- [ ] Learn more about bioinformatics!
+
+## Wednesday
+
+## Thursday
+- [ ] Think extra deeply about bioinformatics
+
+## Friday

@@ -1,0 +1,27 @@
+project:
+  type: website
+  output-dir: docs
+
+website:
+  title: "My lab notebook"
+  navbar:
+    background: "#4A7862"
+    foreground: "#F3F3EE"
+    search: true
+    left:
+      - guided-labs/index.qmd
+      - weekly-notes/index.qmd
+      - text: "Projects"
+        menu:
+        - projects/how-to.qmd
+        - projects/Semester-Project/index.qmd
+    sidebar:
+      contents: auto
+format:
+  html:
+    theme: cosmo
+    css: styles.css
+    toc: true
+    linkcolor: "#4A7862"
+    backgroundcolor: "#faf8f6"
+    code-block-bg: "#EEEEEE"

@@ -1,0 +1,15 @@
+{
+  "hash": "b268a5c17d4d7b529ebd50eac5506fe0",
+  "result": {
+    "engine": "knitr",
+    "markdown": "---\ntitle: \"How to create new projects\"\nformat: html\n---\n\nThe function `qurtoutils::make_project(projectname = \"...\")` simplifies the process of creating a new project subdirectory.\nA new directory is created under the `projects/` directory, using the name specified in the argument `projectname`.\n\nThe project has the following directory structure:\n\n\n::: {.cell}\n\n```{.r .cell-code}\nfs::dir_tree(\"Semester-Project\")\n```\n\n::: {.cell-output .cell-output-stdout}\n\n```\nSemester-Project\n├── idea-note1.html\n├── idea-note1.qmd\n├── index-listing.json\n├── index.html\n└── index.qmd\n```\n\n\n:::\n:::\n\n\nThe `index.qmd` file for the project will automatically search for weekly meeting notes and reading notes that have the same `projects` tag as the name for the newly made project.\n",
+    "supporting": [],
+    "filters": [
+      "rmarkdown/pagebreak.lua"
+    ],
+    "includes": {},
+    "engineDependencies": {},
+    "preserve": {},
+    "postProcess": true
+  }
+}

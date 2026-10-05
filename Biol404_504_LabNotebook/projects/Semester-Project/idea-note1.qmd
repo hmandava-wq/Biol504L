@@ -1,0 +1,19 @@
+---
+title: "Idea note 1"
+date: 2026-08-28
+projects: Semester-Project
+---
+
+## Thoughts about project
+
+Great place to brainstorm next steps and keep track of what you may want to test
+or explore more!
+
+### Possible next steps
+<!-- example header above -->
+
+Tasks you may want to be able to tackle!
+
+- [ ] Make a new post
+- [ ] Make edits to an existing note
+- [ ] Start your digital lab notebook and access online!

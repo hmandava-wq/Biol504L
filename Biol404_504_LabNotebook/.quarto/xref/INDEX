@@ -1,0 +1,35 @@
+{
+  "guided-labs/access-setup-hpc.qmd": {
+    "access-setup-hpc.html": "722c9951"
+  },
+  "guided-labs/connecting-with-github.qmd": {
+    "connecting-with-github.html": "fef94045"
+  },
+  "guided-labs/index.qmd": {
+    "index.html": "8fdfdecf"
+  },
+  "projects/Semester-Project/idea-note1.qmd": {
+    "idea-note1.html": "4f6895b0"
+  },
+  "projects/Semester-Project/index.qmd": {
+    "index.html": "65dbb204"
+  },
+  "projects/how-to.qmd": {
+    "how-to.html": "5156ebe6"
+  },
+  "weekly-notes/week-of-2026-08-31.qmd": {
+    "week-of-2026-08-31.html": "502132a7"
+  },
+  "weekly-notes/index.qmd": {
+    "index.html": "f6b7801a"
+  },
+  "index.qmd": {
+    "index.html": "34bbcbb0"
+  },
+  "reading-notes/demopaper1.qmd": {
+    "demopaper1.html": "9923d16b"
+  },
+  "reading-notes/index.qmd": {
+    "index.html": "a6b59881"
+  }
+}

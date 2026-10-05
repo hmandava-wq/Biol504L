@@ -1,0 +1,132 @@
+---
+title: "Working with GitHub"
+author: "Your Name"
+date: 2026-08-31
+projects: "guided-learning"
+keywords:
+  - github
+  - website
+---
+
+# Goals of the lab overall
+
+---
+
+The skills acquired in this lab class are crucial for bioinformatic tasks using molecular data, such as data analysis, scripting,
+and working in high-performance computing (HPC) environments. My hope is that you don’t just type the commands into the terminal and
+move on -- I would like you to ***think*** about what these commands are doing and start imagining how they could be useful in analyzing your own data.
+
+
+## For your success in the lab
+Each lab is inteded to be a reference point for you on various bioinformatic tasks.
+To make the most of these labs, please treat them like a **personal resource**, so
+adjust any specific commands accordingly.
+
+---
+
+### Overview of today's lab
+This lab provides a reference point for working with GitHub. There will be a recording of how to prepare the
+repository for this lab and we will go through this again as we write our own codes to document our progress on the
+lab's projects.
+
+This ***guided-lab entry*** is for you to build and work with. I have provided the bones, but
+you should spend today's lab updating, checking the changes, and uploading to GitHub when you are happy.
+The more work you put here early, the more comfortable it will be!
+
+As this particular lab page, represent *your* notes, please put as much or as little as you want. I cannot
+stress it enough, that you are in charge of this and you should ***not*** be asking others for help each
+week for updating your notebook. I expect it the first couple weeks, but your notes here will help prevent that!
+
+I strongly suggest asking questions today while the exercise is fresh in your mind (and while your classmates are around to help you!).
+
+# Working with GitHub
+
+---
+
+GitHub is a fantastic place to store and work with lots of code and so many website templates.
+Technically, this digital notebook is a website! You should share (or not) with your parents
+or favorite friends, animals, pets, rocks, plants. Show it off to someone you would like to
+impress (your bioinformatics prof?!) as **you are going to do a great job and should be proud**.
+
+GitHub Checklist:
+
+- [ ] Make a GitHub Repository
+- [ ] Set-up the lab notebook
+- [ ] Save the notebook online as a website!
+- [ ] Update the lab notebook!
+- [ ] Make a new post!
+- [ ] "Push" the changes
+- [ ] Be patient (worst check list option)
+- [ ] View your changes online!
+
+## Setting up and managing your GitHub!
+
+We are going to first "clone" the repository you made by hand. Afterwards,
+we will add some files to it, upload it back to GitHub with those new files (yay backups),
+and setup your lab notebook webpage!
+
+1. Download your empty lab reposity from GitHub (only need to do this the first day)
+   ```bash
+   CODE GOES HERE
+   ```
+2. Download the files from BlackBoard and put them into the empty repository on your computer
+
+3. Using your terminal (or git-bash), move into this folder on your computer.
+
+4. Render them quickly using R-Studio (or the terminal)
+
+5. Check if you have **local** updates that are not found in the **remote** repository
+   ```bash
+   CODE GOES HERE
+   ```
+
+6. So many updates... Well GitHub has three big stages: adding changes, committing those changes
+(part of version control), then "pushing" those changes to the **remote** host (GitHub).
+
+7. Adding your changes to "stage" them to upload
+   ```bash
+   CODE GOES HERE
+   ```
+
+8. Committing those changes before pushing them!
+   ```bash
+   CODE GOES HERE
+   ```
+
+9. Pushing those changes
+   ```bash
+   CODE GOES HERE
+   ```
+
+   Please do **not** store your git-token here! This will be publicly available.
+   Keep it safe on your computer (possibly backup somewhere else)
+
+10. Check that the files are now in your repository
+
+
+## Setting up your notebook site!
+
+Put your notes here!!!
+
+Wait for it to load ... (so hard to do)
+
+Make sure to email your prof about your link!
+
+
+## Practing with GitHub and Editing!
+
+Now, try and upload all your cool changes to GitHub!
+
+Put really good notes here!!!
+
+Remember the order is:
+
+- Make new posts, edits, whatever you want
+- Render them and check locally!
+- Use `git` commands to add, commit, and push your changes
+- Wait patiently
+- Check them online!
+
+# Quick Reference
+
+Make a small reference guide of steps for yourself down here!

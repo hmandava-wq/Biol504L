@@ -1,0 +1,26 @@
+---
+title: "Weekly notes"
+format: html
+listing:
+  contents:
+    - "*.qmd"
+  type: table
+  fields: [date, title, projects]
+  filter-ui: [date, title, projects, keywords]
+---
+
+<!-- Remove the following text when using the template -->
+
+The function `quartoutils::weekly_notes()` makes it easy to create and edit a weekly notes file.
+Specifically, if a weekly notes file for the present week does not exist^[i.e. a file with the name `week-of-YYYY-MM-DD.qmd`, where `yyyy-mm-dd` is the year-month-date of the *Monday* of the current week], `quartoutils::weekly_notes()` will make this file, using a pre-determined template.
+If such a file already exists, `quartoutils::weekly_notes()` simply opens this file for you to edit.
+The file also automatically gets added to a table of all such files, which is accessible from the "Weekly Notes" landing page of the website.
+This functionality is demonstrated in the video below.
+
+:::{.callout-note collapse="true"}
+
+### Video instructions to create/edit weekly notes
+
+{{< video ../media/weekly-notes-video.mp4 >}}
+
+:::

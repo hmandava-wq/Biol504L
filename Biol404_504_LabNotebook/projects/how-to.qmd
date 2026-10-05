@@ -1,0 +1,16 @@
+---
+title: "How to create new projects"
+format: html
+---
+
+The function `qurtoutils::make_project(projectname = "...")` simplifies the process of creating a new project subdirectory.
+A new directory is created under the `projects/` directory, using the name specified in the argument `projectname`.
+
+The project has the following directory structure:
+
+```{r}
+fs::dir_tree("Semester-Project")
+
+```
+
+The `index.qmd` file for the project will automatically search for weekly meeting notes and reading notes that have the same `projects` tag as the name for the newly made project.

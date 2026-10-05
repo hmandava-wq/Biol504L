@@ -1,0 +1,50 @@
+---
+title: 'Semester-Project'
+format: html
+listing:
+  - id: reading-notes
+    contents: "../../reading-notes/*.qmd"
+    type: table
+    fields: [year, title, author]
+    include:
+      projects: "*Semester-Project*"
+  - id: other-ideas
+    contents: "idea*.qmd"
+    type: table
+    fields: [date, title]
+    sort-ui: false
+    filter-ui: false
+  - id: timeline
+    sort-ui: false
+    filter-ui: false
+    contents: "../../weekly-notes/*.qmd"
+    type: table
+    fields: [title, projects, keywords]
+    include:
+      projects: "*Semester-Project*"
+---
+
+## About this project
+
+Briefly describe which dataset and big bioinformatic tasks that best describe the project!
+
+This is up to you to fill out when you are ready. It should also be updated as often
+as needed as the scope changes!
+
+
+## Concept notes and other ideas
+
+:::{#other-ideas}
+:::
+
+
+## Reading notes
+
+:::{#reading-notes}
+:::
+
+
+## Weeks in which I worked on this project
+
+:::{#timeline}
+:::
