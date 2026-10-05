@@ -1,0 +1,1015 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.8.27">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="YOUR-NAME">
+<meta name="dcterms.date" content="2026-09-09">
+<meta name="keywords" content="sra, fastq, trimming, downloading, hpc">
+
+<title>Working with SRA Data – My lab notebook</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<script src="../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../site_libs/quarto-html/axe/axe-check.js" type="module"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-ed96de9b727972fe78a7b5d16c58bf87.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap-99b461468016d36f49710bb6778245d6.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+
+<link rel="stylesheet" href="../styles.css">
+</head>
+
+<body class="nav-fixed quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="../index.html">
+    <span class="navbar-title">My lab notebook</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../guided-labs/index.html"> 
+<span class="menu-text">Guided Labs</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../weekly-notes/index.html"> 
+<span class="menu-text">Weekly notes</span></a>
+  </li>  
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-projects" role="link" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">Projects</span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-projects">    
+        <li>
+    <a class="dropdown-item" href="../projects/how-to.html">
+ <span class="dropdown-text">How to create new projects</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../projects/Semester-Project/index.html">
+ <span class="dropdown-text">Semester-Project</span></a>
+  </li>  
+    </ul>
+  </li>
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#goals-of-the-lab-overall" id="toc-goals-of-the-lab-overall" class="nav-link active" data-scroll-target="#goals-of-the-lab-overall">Goals of the lab overall</a>
+  <ul class="collapse">
+  <li><a href="#for-your-success-in-the-lab" id="toc-for-your-success-in-the-lab" class="nav-link" data-scroll-target="#for-your-success-in-the-lab">For your success in the lab</a></li>
+  </ul></li>
+  <li><a href="#lab-deep-dive" id="toc-lab-deep-dive" class="nav-link" data-scroll-target="#lab-deep-dive">Lab Deep-dive</a>
+  <ul class="collapse">
+  <li><a href="#overview-of-todays-lab" id="toc-overview-of-todays-lab" class="nav-link" data-scroll-target="#overview-of-todays-lab">Overview of today’s lab</a></li>
+  <li><a href="#downloading-inspecting-and-trimming-sra-datasets" id="toc-downloading-inspecting-and-trimming-sra-datasets" class="nav-link" data-scroll-target="#downloading-inspecting-and-trimming-sra-datasets">Downloading, inspecting, and trimming SRA datasets</a></li>
+  <li><a href="#before-we-get-started" id="toc-before-we-get-started" class="nav-link" data-scroll-target="#before-we-get-started">Before we get started</a></li>
+  <li><a href="#connecting-to-bora.sciclone.wm.edu-and-preparing-for-todays-lab" id="toc-connecting-to-bora.sciclone.wm.edu-and-preparing-for-todays-lab" class="nav-link" data-scroll-target="#connecting-to-bora.sciclone.wm.edu-and-preparing-for-todays-lab">Connecting to <code>bora.sciclone.wm.edu</code> and preparing for today’s lab</a></li>
+  <li><a href="#downloading-sra-datasets" id="toc-downloading-sra-datasets" class="nav-link" data-scroll-target="#downloading-sra-datasets">Downloading SRA datasets</a></li>
+  <li><a href="#unpacking-sra-datasets" id="toc-unpacking-sra-datasets" class="nav-link" data-scroll-target="#unpacking-sra-datasets">Unpacking SRA datasets</a></li>
+  <li><a href="#trimming-raw-sra-datasets" id="toc-trimming-raw-sra-datasets" class="nav-link" data-scroll-target="#trimming-raw-sra-datasets">Trimming raw SRA datasets</a></li>
+  <li><a href="#cleaning-up-after-ourselves" id="toc-cleaning-up-after-ourselves" class="nav-link" data-scroll-target="#cleaning-up-after-ourselves">Cleaning up after ourselves</a></li>
+  <li><a href="#downloading-files-to-your-local-computer" id="toc-downloading-files-to-your-local-computer" class="nav-link" data-scroll-target="#downloading-files-to-your-local-computer">Downloading files to your local computer!</a></li>
+  </ul></li>
+  <li><a href="#quick-start-guide" id="toc-quick-start-guide" class="nav-link" data-scroll-target="#quick-start-guide">Quick Start Guide</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Working with SRA Data</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>YOUR-NAME </p>
+          </div>
+  </div>
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">September 9, 2026</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+<div>
+  <div class="keywords">
+    <div class="block-title">Keywords</div>
+    <p>sra, fastq, trimming, downloading, hpc</p>
+  </div>
+</div>
+
+</header>
+
+
+<section id="goals-of-the-lab-overall" class="level1">
+<h1>Goals of the lab overall</h1>
+<p>The skills acquired in this lab class are crucial for bioinformatic tasks using molecular data, such as data analysis, scripting, and working in high-performance computing (HPC) environments. My hope is that you don’t just type the commands into the terminal and move on – I would like you to <strong><em>think</em></strong> about what these commands are doing and start imagining how they could be useful in analyzing your own data.</p>
+<section id="for-your-success-in-the-lab" class="level2">
+<h2 class="anchored" data-anchor-id="for-your-success-in-the-lab">For your success in the lab</h2>
+<p>Each lab is inteded to be a reference point for you on various bioinformatic tasks. To make the most of these labs, please treat them like a <strong>personal resource</strong>, so adjust any specific commands accordingly.</p>
+<hr>
+</section>
+</section>
+<section id="lab-deep-dive" class="level1">
+<h1>Lab Deep-dive</h1>
+<hr>
+<section id="overview-of-todays-lab" class="level3">
+<h3 class="anchored" data-anchor-id="overview-of-todays-lab">Overview of today’s lab</h3>
+<p>Today’s lab will include downloading and manipulating raw sequencing data stored in NCBI’s short read archive.</p>
+<p>This is the first step to many downstream analyses. While not always required, it is a crucial and common step for numerous bioinformatics analyses. While the individual steps do not take much time to perform, it is crucial to build your familiarity with job submission scripts and moving data from local to remote hosts (i.e., your laptop to/from the HPC).</p>
+<p>Make sure to ask questions as needed!</p>
+</section>
+<section id="downloading-inspecting-and-trimming-sra-datasets" class="level3">
+<h3 class="anchored" data-anchor-id="downloading-inspecting-and-trimming-sra-datasets">Downloading, inspecting, and trimming SRA datasets</h3>
+<ul class="task-list">
+<li><label><input type="checkbox">Logging on to the HPC!</label></li>
+<li><label><input type="checkbox">Making a job submission script</label></li>
+<li><label><input type="checkbox">Downloading SRA datasets</label></li>
+<li><label><input type="checkbox">Running QC analyses</label></li>
+<li><label><input type="checkbox">Trimming the reads</label></li>
+<li><label><input type="checkbox">Checking the QC of the trimmed reads!</label></li>
+</ul>
+</section>
+<section id="before-we-get-started" class="level2">
+<h2 class="anchored" data-anchor-id="before-we-get-started">Before we get started</h2>
+<p>Today, we will be using previously published data from Zhao <strong>et al.</strong> (2015). On Blackboard you will see a PDF of the paper, as well as the <code>DGE.Drosophila.Metadata.csv</code> file. You will need the information in this file, which includes all the relevant metadata associated with the experiment. While you will rely on this file today to download the raw sequencing data (<code>SRR numbers</code>), you will be updating this file in the next <code>qmd</code> file, as this lab/page is focused <strong>solely</strong> on the initial data downloading and processing.</p>
+</section>
+<section id="connecting-to-bora.sciclone.wm.edu-and-preparing-for-todays-lab" class="level2">
+<h2 class="anchored" data-anchor-id="connecting-to-bora.sciclone.wm.edu-and-preparing-for-todays-lab">Connecting to <code>bora.sciclone.wm.edu</code> and preparing for today’s lab</h2>
+<p>We are going to first access the HPC again, as you did in our first lab. Refer to your notes as needed!</p>
+<ol type="1">
+<li><p>Download your empty lab reposity from GitHub (only need to do this the first day)</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ssh</span> wm-username@bora.sciclone.wm.edu</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div></li>
+<li><p>Move into your lab folder (this should be in the <code>scr10</code> directory)</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="ex">YOUR</span> CODE HERE</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div></li>
+<li><p>Make a new directory called <code>raw_read_prep</code> if you have not already!</p>
+<div class="callout callout-style-default callout-tip callout-titled" title="In case you get stumped">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>In case you get stumped
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-1" class="callout-1-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>Use the <code>mkdir</code> command to make a new directory!</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span> raw_read_prep</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</div>
+</div></li>
+<li><p>Move into your new <code>raw_read_prep</code> folder</p>
+<div class="callout callout-style-default callout-tip callout-titled" title="In case you get stumped">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-2-contents" aria-controls="callout-2" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>In case you get stumped
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-2" class="callout-2-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>Use the <code>cd</code> command to move into your new directory!</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> raw_read_prep</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</div>
+</div></li>
+<li><p>Load miniforge3 to get access to <code>conda</code></p>
+<div class="callout callout-style-default callout-tip callout-titled" title="In case you get stumped">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-3-contents" aria-controls="callout-3" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>In case you get stumped
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-3" class="callout-3-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="ex">module</span> load miniforge3/24.9.2-0</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</div>
+</div></li>
+<li><p>Activate your <code>sra_prep</code> container</p>
+<div class="callout callout-style-default callout-tip callout-titled" title="In case you get stumped">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-4-contents" aria-controls="callout-4" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>In case you get stumped
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-4" class="callout-4-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="ex">conda</span> activate sra_prep</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</div>
+</div></li>
+</ol>
+<p>Great! Hopefully the navigation is getting easier!</p>
+<hr>
+</section>
+<section id="downloading-sra-datasets" class="level2">
+<h2 class="anchored" data-anchor-id="downloading-sra-datasets">Downloading SRA datasets</h2>
+<p>You will need to make a copy of your job submission script that you created during last week’s lab, which you can then edit to make it easy to download and process your raw read downloads!</p>
+<ol type="1">
+<li><p>Make sure you are in the <code>raw_read_prep</code> folder</p>
+<div class="callout callout-style-default callout-tip callout-titled" title="In case you get stumped">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-5-contents" aria-controls="callout-5" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>In case you get stumped
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-5" class="callout-5-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>Use the <code>cd</code> command to move into your new directory!</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> raw_read_prep</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</div>
+</div></li>
+<li><p>Make a copy of last week’s slurm script and rename it <code>sra_download.sh</code></p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cp</span> ../Slurm_Scripts/prep_conda_env.sh ../Slurm_Scripts/sra_download.sh</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Did you notice that the above command uses <strong>relative</strong> paths to copy (<code>cp</code>) the file!</p></li>
+<li><p>You need to edit the contents of the new <code>sra_download.sh</code> file! Use <code>nano</code> to start editing the file</p>
+<div class="callout callout-style-default callout-tip callout-titled" title="In case you get stumped">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-6-contents" aria-controls="callout-6" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>In case you get stumped
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-6" class="callout-6-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">nano</span> ../Slurm_Scripts/sra_download.sh</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</div>
+</div></li>
+<li><p>We will start by making a <code>for loop</code> using <code>bash</code> to download three of the sequencing runs. You will be using <code>prefetch</code> to download the data. <code>prefetch</code> is part of the <code>sratools</code> suite of tools that NCBI has released to make it easier to access raw sequencing data from the <code>SRA</code> repository.</p>
+<p>Make sure to delete the existing command inside the file. Then add the following <code>for loop</code>.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> seqrun <span class="kw">in</span> SRR1576457 SRR1576458 SRR1576459</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="cf">do</span></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a> <span class="ex">prefetch</span> <span class="at">-v</span> <span class="va">$seqrun</span></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="cf">done</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Make sure to update the job-name! And this may take a little bit of time, so do not be alarmed!</p></li>
+<li><p>Submit your job!</p>
+<div class="callout callout-style-default callout-tip callout-titled" title="In case you get stumped">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-7-contents" aria-controls="callout-7" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>In case you get stumped
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-7" class="callout-7-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="ex">sbatch</span> ../Slurm_Scripts/sra_download.sh</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</div>
+</div></li>
+<li><p>Check that your submitted batch job is running</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb12"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="ex">squeue</span> <span class="at">--m</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div></li>
+<li><p>You can also check to see how many of the sequencing runs are downloaded/downloading using the <code>ls</code> command. <code>prefetch</code> downloads the files into their own folders!</p></li>
+<li><p>While there are <strong><em>nine</em></strong> more files to download, they will be up to you to do on your own during the lab today. So feel free to reference this section as needed.</p>
+<p>You will need to make sure to edit the script, and update the sequencing run numbers.</p>
+<p>If you want, you can make edits to your job submission script, submit it using <code>sbatch</code>, and repeat! As soon as the job is submitted the contents of your job submission script are “remembered” by the head-node, so you are free to add more jobs to the queue!</p></li>
+</ol>
+</section>
+<section id="unpacking-sra-datasets" class="level2">
+<h2 class="anchored" data-anchor-id="unpacking-sra-datasets">Unpacking SRA datasets</h2>
+<p>If you were curious and used <code>ls</code> to peek into those newly created folders, you would have seen a file ending in <code>.sra</code>. This is the packed (compressed) raw data!</p>
+<p>We need to unpack it using the tool <code>parallel-fastq-dump</code>.</p>
+<p>Below, is a walkthrough of one way to do this. It is a bit involved, but it will make it easy to link the file to the existing metadata!</p>
+<p><em>You should repeat the following steps for each file</em></p>
+<ol type="1">
+<li><p>Make a copy of last week’s slurm script and rename it <code>sra_fastq_dump.sh</code></p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb13"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cp</span> ../Slurm_Scripts/prep_conda_env.sh ../Slurm_Scripts/sra_fastq_dump.sh</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div></li>
+<li><p>Make some extra edits to this file!</p>
+<ul class="task-list">
+<li><label><input type="checkbox">update the <code>job-name</code></label></li>
+<li><label><input type="checkbox">update the <code>--ntasks</code> value to <code>8</code></label></li>
+<li><label><input type="checkbox">delete the old command</label></li>
+</ul></li>
+<li><p>Now we will add the command to run <code>parallel-fastq-dump</code></p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb14"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="ex">parallel-fastq-dump</span> <span class="at">--split-files</span> <span class="dt">\</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>     <span class="at">--gzip</span> <span class="dt">\</span></span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>     <span class="at">--threads</span> 8 <span class="dt">\</span></span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>     <span class="at">-s</span> SRR1576457 <span class="dt">\</span></span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>     <span class="at">-O</span> Dmel_Maine_21C_Rep1</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Here is a breakdown of the command:</p>
+<ul>
+<li><code>--split-files</code>: separate the file into <code>forward</code> and <code>reverse</code> reads (the data are paired-end!)</li>
+<li><code>--gzip</code>: these raw <code>fastq</code> files can be big, so we will keep them compressed</li>
+<li><code>--threads 8</code>: tells the HPC to multi-task on this job, splitting the job into 8 pieces to speed it up</li>
+<li><code>-s SRR#</code>: tells the tool which dataset we want to process</li>
+<li><code>-O NAME</code>: the name we want the output folder to be. It is typically nice to include the metadata and/or the <code>SRR accession</code> (or both)</li>
+</ul></li>
+<li><p>Using <code>sbatch</code>, submit the job!</p></li>
+<li><p>Repeat for the other datasets that have <strong><em>FINISHED</em></strong> downloading. Use <code>squeue --m</code> to check that the files you are trying to unpack have finished downloading!</p></li>
+<li><p>As before, it is up to you to unpack the rest of the datasets during our time in lab (or outside if that’s easier). So long as one of the sequencing runs is downloaded and unpacked, you can move on to the last section, which is trimming and the quality checking!</p></li>
+</ol>
+</section>
+<section id="trimming-raw-sra-datasets" class="level2">
+<h2 class="anchored" data-anchor-id="trimming-raw-sra-datasets">Trimming raw SRA datasets</h2>
+<p>If you were curious and used <code>ls</code> to peek into those newly created folders, you would have seen a file ending in <code>.sra</code>. This is the packed (compressed) raw data!</p>
+<p>We need to unpack it using the tool <code>parallel-fastq-dump</code>.</p>
+<p>Below, is a walkthrough of one way to do this. It is a bit involved, but it will make it easy to link the file to the existing metadata!</p>
+<p><em>You should repeat the following steps for each file</em></p>
+<ol type="1">
+<li><p>Make a copy of the <code>sra_fastq_dump.sh</code> slurm script and rename it <code>fastq_trim.sh</code></p>
+<div class="callout callout-style-default callout-tip callout-titled" title="In case you get stumped">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-8-contents" aria-controls="callout-8" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>In case you get stumped
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-8" class="callout-8-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb15"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cp</span> ../Slurm_Scripts/prep_conda_env.sh ../Slurm_Scripts/sra_fastq_trim.sh</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</div>
+</div></li>
+<li><p>You will need to edit the newly copied script, <code>sra_fastq_trim.sh</code>. As the prior script already was set up for multi-threading (<code>--ntasks=8</code>), the only change is to replace the prior command with one for our read-trimming tool, <code>fastp</code>.</p>
+<p>The command is below, followed by a breakdown of the options. The below command is written for just <strong><em>one</em></strong> file, so you will need to adjust this!</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb16"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="ex">fastp</span> <span class="dt">\</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>     <span class="at">-i</span> Dmel_Maine_21C_Rep1/SRR1576457_1.fastq.gz <span class="dt">\</span></span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>     <span class="at">-I</span> Dmel_Maine_21C_Rep1/SRR1576457_2.fastq.gz <span class="dt">\</span></span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>     <span class="at">-o</span> Dmel_Maine_21C_Rep1.Fwd.20q.80nt.fastq.gz <span class="dt">\</span></span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>     <span class="at">-O</span> Dmel_Maine_21C_Rep1.Rev.20q.80nt.fastq.gz <span class="dt">\</span></span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>     <span class="at">-h</span> Dmel_Maine_21C_Rep1.html <span class="dt">\</span></span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a>     <span class="at">-R</span> <span class="st">"Dmel_Maine_21C_Rep1 Report"</span> <span class="dt">\</span></span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a>     <span class="at">-q</span> 20  <span class="dt">\</span></span>
+<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a>     <span class="at">-l</span> 80 <span class="dt">\</span></span>
+<span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a>     <span class="at">-w</span> 8 <span class="dt">\</span></span>
+<span id="cb16-11"><a href="#cb16-11" aria-hidden="true" tabindex="-1"></a>     <span class="at">-r</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Here is a breakdown of the command:</p>
+<ul>
+<li><code>-i</code>: PATH to your <code>forward</code> reads</li>
+<li><code>-I</code>: PATH to your <code>reverse</code> reads</li>
+<li><code>-o</code>: what to name your trimmed <code>forward</code> reads</li>
+<li><code>-O</code>: what to name your trimmed <code>reverse</code> reads</li>
+<li><code>-h</code>: what to name the output quality score <code>html</code> file</li>
+<li><code>-R</code>: the report name to add to the output quality score <code>html</code> file</li>
+<li><code>-q</code>: minimum Phred quality score to use for read trimming</li>
+<li><code>-l</code>: minimum read length to keep a read following trimming</li>
+<li><code>-w</code>: number of threads to use (this should ideally be the same as <code>--ntasks</code>)</li>
+<li><code>-r</code>: perform the per-base trimming starting on the right side of the read</li>
+</ul></li>
+<li><p>Using <code>sbatch</code>, submit the job!</p></li>
+<li><p>Repeat for the other datasets that have <strong><em>FINISHED</em></strong> unpacking with <code>parallel-fastq-dump</code>. Use <code>squeue --m</code> to check that the files you are trying to unpack have finished downloading!</p></li>
+</ol>
+</section>
+<section id="cleaning-up-after-ourselves" class="level2">
+<h2 class="anchored" data-anchor-id="cleaning-up-after-ourselves">Cleaning up after ourselves</h2>
+<p>By now, you will have tons of files, all sitting inside your <code>raw_read_prep</code> folder. We do need to make sure to clean-up after ourselves on the HPC, as we have many “intermediate” files, which take up a reasonably large amount of space.</p>
+<p>To do our cleanup, we will be using a <em>dangerous</em> command, <code>rm</code>. What makes this command so dangerous is that it removes the files/folders permanently. This is like moving a file to your trash on your computer and tossing the trash out at the same time.</p>
+<p>Take your time when doing this! We will remove files little bit by little bit.</p>
+<ol type="1">
+<li><p>Running and submitting jobs to SLURM will generate a ton of “slurm.out” files. These are logs from the HPC and the tool(s) you used. Typically, you won’t need these for very long, outside of handling errors.</p>
+<p>We can remove all of these in one step!</p>
+<div class="callout callout-style-default callout-warning callout-titled" title="Removing slurm logs">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Warning</span>Removing slurm logs
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb17"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">rm</span> slurm-<span class="pp">*</span>.out</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</div>
+<p><code>rm</code> followed by a file, will remove the file. You can also use the <code>wildcard</code> character, <code>*</code>. In the example above, the way this is put in the command effectively tells the computer “remove anything that startswith <code>slurm-</code> <strong><em>and</em></strong> ends with <code>.out</code>”</p></li>
+<li><p>Make sure to remove all the files that end with <code>.json</code> as we do not need these!</p>
+<div class="callout callout-style-default callout-warning callout-titled" title="Removing slurm logs">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Warning</span>Removing slurm logs
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb18"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">rm</span> <span class="pp">*</span>.json</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</div></li>
+<li><p>This step is for any sequencing runs that have been <strong>fully</strong> processed, which includes downloading, unpacking, trimming. We will start by removing each of the intermediate folders, one at a time. It is okay to do this slowly and carefully, as you don’t want to need to do the processing over again.</p>
+<p>Below is the command to remove just one of the folders from the initial SRR downloading</p>
+<div class="callout callout-style-default callout-warning callout-titled" title="Removing Folders">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Warning</span>Removing Folders
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb19"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="fu">rm</span> <span class="at">-rf</span> SRR1576457</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</div>
+<p>You <em>can</em> combine this with the <code>wildcard</code> to remove all of the SRR folders, but you need to be very certain you have “unpacked” them!</p>
+<p>You can also use that command to remove <em>any</em> folders, but again, please be cautious!</p></li>
+</ol>
+</section>
+<section id="downloading-files-to-your-local-computer" class="level2">
+<h2 class="anchored" data-anchor-id="downloading-files-to-your-local-computer">Downloading files to your local computer!</h2>
+<p>The read trimming tool, <code>fastp</code>, automatically generates quality score reports for you to peruse! The only trouble is that these are stored on the HPC and you will need to download them to your computer to view.</p>
+<p>In a new terminal window, move to your Desktop. If you want, you can make a folder specifically for these files, since the aim here is to really just look at them once.</p>
+<p>I would not store them in the lab folder that is <code>pushed</code> to GitHub, but you are free to make a new folder and store them there!</p>
+<p>Once you are on your computer where you would like to download the files to, feel free to run the following steps.</p>
+<ol type="1">
+<li><p>In the terminal that is logged onto the HPC, use <code>pwd</code> to get the <code>PATH</code> (location) of where you currently are. This should be where the <code>.html</code> files are stored.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb20"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="bu">pwd</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Copy the output location! You will paste it in the next command!</p>
+<p>Download <strong><em>all</em></strong> the <code>.html</code> to your current working directory on your laptop.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb21"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="fu">scp</span> wm-username@bora.sciclone.wm.edu:PASTE-YOUR-PATH</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div></li>
+</ol>
+<hr>
+</section>
+</section>
+<section id="quick-start-guide" class="level1">
+<h1>Quick Start Guide</h1>
+<hr>
+<p>This is for your reference in the future, so you don’t have to slog through all the work above! Also, what a great way to practice this week :)</p>
+<p>Below, the steps are numbered with emtpy code blocks below them. Copy-paste your commands there!</p>
+<ol type="1">
+<li><p>Use <code>ssh</code> to log onto <code>bora</code></p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb22"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="ex">CODE</span> GOES HERE</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div></li>
+<li><p>Move into your <code>raw_read_prep</code> directory inside your Biol404L directory</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb23"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="ex">CODE</span> GOES HERE</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div></li>
+<li><p>Activate your conda <code>sra_prep</code> container (make sure to load miniforge3 first)</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb24"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="ex">CODE</span> GOES HERE</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div></li>
+<li><p>Edit your <code>sra_download.sh</code> script to add, change, remove SRA accession numbers to download</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb25"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="ex">CODE</span> GOES HERE</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div></li>
+<li><p>Run your <code>sra_download.sh</code> script</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb26"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="ex">CODE</span> GOES HERE</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div></li>
+<li><p>Edit your <code>sra_fastq_dump.sh</code> script to change the SRA accession numbers to unpack and the output folder to store them.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb27"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="ex">CODE</span> GOES HERE</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div></li>
+<li><p>Run your <code>sra_fastq_dump.sh</code> script</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb28"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="ex">CODE</span> GOES HERE</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div></li>
+<li><p>Edit your <code>fastq_trim.sh</code> script to change the compressed fastq files to trim and the output names to save them.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb29"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="ex">CODE</span> GOES HERE</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div></li>
+<li><p>Run your <code>fastq_trim.sh</code> script</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb30"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="ex">CODE</span> GOES HERE</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div></li>
+<li><p>Remember your cleaning commands! <code>bash     CODE GOES HERE</code></p></li>
+</ol>
+<p>Make a small reference guide of steps for yourself down here!</p>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>
