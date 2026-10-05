@@ -1,0 +1,384 @@
+---
+title: "Transcript Quantification"
+author: "YOUR-NAME"
+date: 2026-09-09
+projects: "guided-learning"
+keywords:
+  - salmon
+  - read-mapping
+  - hpc
+---
+
+# Goals of the lab overall
+
+The skills acquired in this lab class are crucial for bioinformatic tasks using molecular data, such as data analysis, scripting,
+and working in high-performance computing (HPC) environments. My hope is that you don’t just type the commands into the terminal and
+move on -- I would like you to ***think*** about what these commands are doing and start imagining how they could be useful in analyzing your own data.
+
+## For your success in the lab
+Each lab is inteded to be a reference point for you on various bioinformatic tasks.
+To make the most of these labs, please treat them like a **personal resource**, so
+adjust any specific commands accordingly.
+
+---
+
+# Lab Deep-dive
+
+---
+
+### Overview of today's lab
+Today's lab will include preparing data for transcript quantification with the
+pseudo-alignment tool, [Salmon](https://combine-lab.github.io/salmon/getting-started/introduction/).
+
+This work largely includes uploading and downloading data to and from the W&M's HPC.
+The transcriptome and genome are already prepared for you, along with the list of
+"decoys" (genome sequence names), which Salmon requires.
+
+As in prior guided-labs, this lab will walkthrough the quantification using
+***only one*** of the sequencing runs. You will need to repeat this for all of them.
+
+It is important to acknowledge that there are existing tools/workflows that do
+automate many of these steps for you, such as the fantastic NextFlow-Core's
+[RNA-seq workflow](https://github.com/nf-core/rnaseq). While this emphasizes
+reproducibility, the greatest aim in this lab course is to build your comfort
+interacting with the HPC and handling files. This is where repetition is really
+powerful, as it really is **practice, practice, practice**!
+
+Make sure to ask questions as needed!
+
+### Moving files, `Salmon`, Transcript Abundance!
+- [ ] Logging on to the HPC!
+- [ ] Uploading files to the HPC
+- [ ] Quantifying transcript abundance
+- [ ] Downloading the resulting table(s)!
+- [ ] Setting up for Differential Gene Expression
+
+---
+
+## Preparing today's lab
+Today, we will be using previously published *Drosophila melanogaster* genome and
+transcriptome, which were taken from NCBI's RefSeq database, along with a file
+containing the names of the genome sequences (these will be Salmon's "decoys").
+
+This will include uploading files to the HPC and doing a little bit of file
+manipulation to prepare everything.
+
+1. Download the files for today from Blackboard
+   - `Drosophila.Genome.fasta`
+   - `Drosophila.Transcriptome.fasta`
+   - `Drosophila.decoys.txt`
+
+2. Open **two** terminal windows.
+
+3. In **one** of those terminals, log onto the HPC
+
+4. On the HPC and in your lab folder in `scr10`, you should (hopefully) have a
+`transcript_quantification` folder. If you do not, then make one
+**in your lab folder**
+
+5. Move into the `transcript_quantification` folder
+   ```bash
+   YOUR CODE HERE
+   ```
+
+6. Use `pwd` to view the `PATH` to this folder. Make sure to copy this path!
+
+7. You will use your **local** terminal (not connected to the HPC) to upload data
+to the `transcript_quantification`.
+   ```bash
+   scp [DRAG-FILE-TO-TERMINAL] wm-username@bora.sciclone.wm.edu:[PASTE-THE-PWD-PATH]
+   ```
+
+   `scp` works by moving files **from** a location **to** another location.
+
+   By putting the files from your computer first, `scp` will copy those files **from**
+   your computer **to** the HPC. Later, we will do the reverse.
+
+8. Once your **local** terminal says the files have uploaded, you can close it.
+
+9. In the remote (HPC) terminal, check that the files are there.
+
+   ::: {.callout-tip title="In case you get stumped" collapse="true"}
+   Use the `ls` command to view everything in your folder!
+   ```bash
+   ls
+   ```
+   :::
+
+   You should see all three files there!
+
+10. Make a new folder for `Salmon`'s outputs, `Salmon_Quant`
+
+    ::: {.callout-tip title="In case you get stumped" collapse="true"}
+    Use the `mkdir` command to make a new folder!
+    ```bash
+    mkdir Salmon_Quant
+    ```
+    :::
+
+---
+
+## Preparing the `Salmon` index
+
+`Salmon` is a pseudo-alignment tool, which quickly "aligns" your raw reads to
+a transcriptome. To do make this fast and accurate, `Salmon` needs the transcriptome
+formatted in a specific way to facilitate its work. This is called `indexing` and
+is a common step for many bioinformatic tools.
+
+1. To generate the indexed dataset for `Salmon`, we need to prepare a file with
+the transcriptome **and** genome together since we are using the genome as a "decoy"
+to improve the mRNA quantification. This is easily done with another wonderful
+terminal command, `cat`.
+
+   `cat` can either show you everything inside a file or "concatenate" (merge)
+   files together. Today we will merge the genome and transcriptome.
+
+   ::: {.callout-tip title="How `cat` works"}
+   `cat` merges files together in the order that you provide them. This means that
+   every subsequent file is "merged" to the bottom of the prior file(s).
+
+   This is really important as `Salmon` expects the genome (our "decoy") sequences
+   to be at the bottom of the file. So you just put the transcriptome first followed by
+   the genome and make sure to store the output, using `>` to a new file.
+
+   The command is below to help illustrate this! While we are using just two files,
+   this command will work for any number of files!
+
+   ```bash
+   cat Drosophila.Transcriptome.fasta Drosophila.Genome.fasta > Drosophila.Txm_Gnm.fasta
+   ```
+   :::
+
+2. You can now remove the `Drosophila.Transcriptome.fasta` and `Drosophila.Genome.fasta`
+files from the HPC.
+
+   ::: {.callout-tip title="In case you get stumped" collapse="true"}
+   ```bash
+   rm some-file
+   ```
+   :::
+
+3. Now we can prepare to generate the `Salmon` index. First, load `conda` and
+activate the `txpt_quant` container.
+
+   If you do not have the `txpt_quant` container, refer back to the
+   `access-setup-hpc` guided lab on how to make new containers and install software.
+
+4. With your container active, you need to make another job submission script! Go
+ahead and copy the `fastq_trim.sh` script and save it as `salmon_run.sh`.
+
+5. Inside this script, you will need to remove the exising `fastp` command, then add
+the following commands to generate the `index` that `Salmon` needs for our *Drosophila*
+data.
+   ```bash
+   salmon index \
+        -p 8 \
+        -d Drosophila.decoys.txt \
+        -i dmel_index \
+        -t Drosophila.Txm_Gnm.fasta
+   ```
+
+    Here is a breakdown of the command:
+    - `index`: tells `Salmon` that we are preparing its index
+    - `-p`: number of threads to use (this should ideally be the same as `--ntasks`)
+    - `-d`: PATH to the `decoys.txt` file (these are just the name of the genome sequences)
+    - `-i`: what you would like `Salmon` to name your index
+    - `-t`: PATH to the merge transcriptome and genome fasta files
+
+6. All you need to do now is submit the job submission script!
+
+   ::: {.callout-tip title="In case you get stumped" collapse="true"}
+   ```bash
+   sbatch salmon_run.sh
+   ```
+   :::
+
+---
+
+## Quantify Transcript Abundance!
+
+With the index prepared, it is fairly easy to start quantifying transcript abundance
+from **each** of the trimmed reads, which were prepared before.
+
+1. First, let's update the existing `salmon_run.sh` file. This time instead of
+deleting the command, let's leave it there. However, add one `#` in front of each
+line in the command to "comment out" the command. This will prevent it from being
+run each time this script is submitted.
+
+   This is a nice way to leave useful bits of code in these job submission scripts
+   that we use rarely. It can serve as a nice reference for later!
+
+2. Now add the command to run the quantification to the `salmon_run.sh` script.
+   ```bash
+   salmon quant -i dmel_index \
+      -l A \
+      -1 forward.fastq.gz \
+      -2 reverse.fastq.gz \
+      -p 8 \
+      -o Salmon_Quant/outname_Quant
+   ```
+
+   Here is a breakdown of the command:
+   - `quant`: tells `Salmon` that we are quantifying transcript expression
+   - `-i`: PATH to the `Salmon` index
+   - `-l`: specify what type of sequencing library we used (`A` tells `Salmon` to determine this automatically)
+   - `-1`: PATH to the `forward` reads
+   - `-2`: PATH to the `reverse` reads
+   - `-p`: number of threads to use (this should ideally be the same as `--ntasks`)
+   - `-o`: what you would like `Salmon` to name the output directories it is going to make
+
+   There are some placeholder names that you can update!
+
+::: {.callout-caution}
+The steps below are to show you how to run the transcript quantification with **just one**
+set of trimmed reads.
+
+You will need to update the names as appropriate.
+
+This *can* be automated a bit more, but I want to stress that being pushed to touch
+and update these files repeatedly will help it become more familiar and easy to do!
+:::
+
+3. For each of the sets of reads, it would be best to provide the **full** path to
+the trimmed reads in the script. Especially, as you should be working in your
+`transcript_quantification` folder, we do not have to any confusing navigation.
+
+   In the code below are the `PATH`s to ***my*** files. You should update it accordingly!
+   ```bash
+   salmon quant \
+        -i dmel_index \
+        -l A \
+        -1 /sciclone/scr10/xxmaureralcala/Biol404L/raw_read_prep/Dmel_Maine_21C_Rep1.Fwd.20q.80nt.fastq.gz \
+        -2 /sciclone/scr10/xxmaureralcala/Biol404L/raw_read_prep/Dmel_Maine_21C_Rep1.Rev.20q.80nt.fastq.gz \
+        -p 8 \
+        -o Salmon_Quant/Dmel_Maine_21C_Rep1_Quant
+   ```
+
+   You can see that I added the sample information to the `-o` to make it clear
+   which set of trimmed reads were being processed.
+
+4. Submit the `salmon_run.sh` script and feel free to update it with new sets of
+reads and repeat!
+
+5. Sit back and rest for a moment! We are finally about to touch some results! Yay!
+
+---
+
+## Downloading the `Salmon` quantification files
+
+We will be using R-Studio for a brief moment, before downloading the output
+transcript-level quantification files from `Salmon`
+
+1. With R-Studio open, go to the `File` menu and select `New Project`
+
+2. In the pop-up menu select `New Directory`
+
+3. Then choose `New Project` and name the new directory `Guided_DGE_Analysis`
+
+4. When prompted, use the menu to put this project as a `sub-directory` of your
+`Desltop`
+
+5. You should see the `Guided_DGE_Analysis` on your `Desktop`
+
+6. Inside that folder, make the following new folders
+   - [ ] `quant_data`
+   - [ ] `metadata`
+   - [ ] `results`
+
+7. Open a new **local** terminal and move into `quant_data` folder inside the `Guided_DGE_Analysis` folder
+
+   ::: {.callout-tip title="In case you get stumped" collapse="true"}
+   ```bash
+   cd [PATH-TO-DRAG-QUANT-DATA-FOLDER]
+   ```
+   :::
+
+8. Once inside your `quant_data`, we can download ALL of the `Salmon` outputs.
+Each sample will be in its own folder. To make it easy, get the `PATH`, using `pwd`,
+to the `Salmon_Quant` folder on the HPC.
+
+   **Make sure you are in the `quant_data` folder before continuing!
+
+   When ready, we will use `scp` to download the data **from** the HPC **to** our
+   `quant_data` folder locally.
+
+   In your **local** terminal, use `scp` to download the data.
+
+   ```bash
+   scp -r wm-username@bora.sciclone.wm.edu:[PATH-TO-SALMON-QUANT-DATA-FOLDER]/Dmel* .
+   ```
+
+   ::: {.callout-tip title="For Mac Users" collapse="true"}
+   Sometimes the terminal hates the `wildcard` character, `*`. To force it to use
+   it in a way that makes sense, you just need to slightly adjust the `scp` command
+   ```bash
+   scp -r wm-username@bora.sciclone.wm.edu:[PATH-TO-SALMON-QUANT-DATA-FOLDER]/Dmel\* .
+   ```
+   :::
+
+---
+
+# Quick Start Guide
+
+---
+
+This is for your reference in the future, so you don't have to slog through all the work above!
+Also, what a great way to practice this week :)
+
+Below, the steps are numbered with emtpy code blocks below them. Copy-paste your commands there!
+
+1. Log onto the HPC
+   ```bash
+   YOUR CODE HERE
+   ```
+
+2. Move into your `transcript_quantification` folder on the HPC
+   ```bash
+   YOUR CODE HERE
+   ```
+
+3. In a new terminal, copy files for today's lab to the `transcript_quantification`
+folder on the HPC
+   ```bash
+   YOUR CODE HERE
+   ```
+
+4. Prepare the `Salmon` index files! -- ONLY NEEDS TO BE DONE ONE TIME!
+   a. Merge the transcriptome and genome files into one file
+      ```bash
+      YOUR CODE HERE
+      ```
+
+   b. Edit your `salmon_run.sh` file to run just the index-creation step
+      ```bash
+      YOUR CODE HERE
+      ```
+
+   c. Submit the `salmon_run.sh` script
+      ```bash
+      YOUR CODE HERE
+      ```
+5. Use `Salmon` to quantify transcript-level abundances
+   a. Edit your `salmon_run.sh` file to run just the quantification steps with the
+   appropriate pair of reads
+      ```bash
+      YOUR CODE HERE
+      ```
+
+   b. Submit the `salmon_run.sh` script
+      ```bash
+      YOUR CODE HERE
+      ```
+   c. Repeat!
+
+6. In your local terminal, move into the `quant_data` folder inside the
+`Guided_DGE_Analysis` folder that you already created
+   ```bash
+   YOUR CODE HERE
+   ```
+
+7. Download all the outputs from the `Salmon_Quant` folder on the HPC to the
+`quant_data` on your computer
+   ```bash
+   YOUR CODE HERE
+   ```
