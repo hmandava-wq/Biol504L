@@ -1,0 +1,10 @@
+salmon (rust port, reads mode) v2.7.0
+start: Thu Sep 24 13:34:16 2026
+end:   Thu Sep 24 13:35:21 2026
+library type: A
+mapping type: mapping
+observed fragments: 24161571
+mapped fragments: 21842949
+mapping rate: 90.4037%
+number of equivalence classes: 61880
+fragment length mean (sd): 191.70 (26.23)

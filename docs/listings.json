@@ -15,6 +15,7 @@
     "listing": "/guided-labs/index.html",
     "items": [
       "/guided-labs/access-setup-hpc.html",
+      "/guided-labs/dge-wrap-up-viz.html",
       "/guided-labs/diff-gene-expression.html",
       "/guided-labs/txpt-quantification (1).html",
       "/guided-labs/txpt-quantification.html",

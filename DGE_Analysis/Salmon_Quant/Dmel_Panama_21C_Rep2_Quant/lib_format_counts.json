@@ -1,0 +1,26 @@
+{
+  "read_files": [
+    "../raw_read_prep/Dmel_Panama_21C_Rep2.Fwd.20q.80nt.fastq.gz",
+    "../raw_read_prep/Dmel_Panama_21C_Rep2.Rev.20q.80nt.fastq.gz"
+  ],
+  "expected_format": "IU",
+  "compatible_fragment_ratio": 1.0,
+  "num_compatible_fragments": 20088267,
+  "num_incompatible_fragments": 0,
+  "num_assigned_fragments": 20088267,
+  "num_frags_with_concordant_consistent_mappings": 19773047,
+  "num_frags_with_inconsistent_or_orphan_mappings": 406985,
+  "strand_mapping_bias": 0.502032185530131,
+  "IU": 0,
+  "ISF": 9926706,
+  "ISR": 9846341,
+  "OU": 0,
+  "OSF": 0,
+  "OSR": 0,
+  "MU": 0,
+  "MSF": 0,
+  "MSR": 0,
+  "U": 0,
+  "SF": 243984,
+  "SR": 163001
+}

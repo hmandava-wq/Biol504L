@@ -1,0 +1,15 @@
+{
+  "salmon_version": "2.7.0",
+  "index": "dmel_index",
+  "libType": "A",
+  "output": "Salmon_Quant/Dmel_Panama_21C_Rep2_Quant",
+  "mates1": [
+    "../raw_read_prep/Dmel_Panama_21C_Rep2.Fwd.20q.80nt.fastq.gz"
+  ],
+  "mates2": [
+    "../raw_read_prep/Dmel_Panama_21C_Rep2.Rev.20q.80nt.fastq.gz"
+  ],
+  "unmatedReads": [],
+  "threads": 8,
+  "sketch": false
+}

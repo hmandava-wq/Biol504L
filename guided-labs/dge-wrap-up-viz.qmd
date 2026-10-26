@@ -1,0 +1,481 @@
+---
+title: "DGE Vizualizations and Follow-up"
+author: "YOUR-NAME"
+date: 2026-10-19
+projects: "guided-learning"
+keywords:
+  - deseq2
+  - r
+  - expression
+---
+
+# Goals of the lab overall
+
+The skills acquired in this lab class are crucial for bioinformatic tasks using molecular data, such as data analysis, scripting,
+and working in high-performance computing (HPC) environments. My hope is that you don’t just type the commands into the terminal and
+move on -- I would like you to ***think*** about what these commands are doing and start imagining how they could be useful in analyzing your own data.
+
+## For your success in the lab
+Each lab is inteded to be a reference point for you on various bioinformatic tasks.
+To make the most of these labs, please treat them like a **personal resource**, so
+adjust any specific commands accordingly.
+
+***
+
+# Lab Deep-dive
+
+***
+
+### Overview of today's lab
+Today's lab will focus on wrapping up our differential gene expression analysis
+visualization and follow-up analyses. This lab's goal is intended to provide the
+basis for "final" figures and how to perform a classic gene ontology enrichment
+analysis. Given that this lab will be shorter, it is also the best time to get
+any additional help, while the work is still more fresh.
+
+Make sure to ask questions about the visualizations and analyses, as needed!
+Remember, that repetition is really powerful, as it really is **practice, practice, practice**!
+
+Make sure to ask questions as needed!
+
+### Moving files, `DESeq2`, Differential Gene Expression!
+- [ ] Installing R packages
+- [ ] Re-assessing differential gene expression!
+- [ ] Data visualization!
+- [ ] Gene ontology enrichment analysis
+
+***
+
+## Installing the necessary R packages
+Following last week's steps for installations, we need to install a few more packages
+for today.
+
+Using BiocManager, install:
+- [ ] clusterProfiler
+- [ ] AnnotationHub
+- [ ] ashr
+
+We also need to install a few "normal" packages that may not be pre-installed yet
+- [ ] ggplot2
+- [ ] dplyr
+- [ ] RColorBrewer
+- [ ] tibble
+- [ ] tidyr
+- [ ] scales
+
+Once installed, make sure to load the libraries too! You can follow the example
+below
+
+```bash
+library(ggplot2)
+```
+
+***
+## Preparing today's lab
+Today, we will re-work some of our differential gene expression analyses from last
+week. There are two reasons for this: 1) practice! and 2) there is a more appropriate
+means to shrink the log2-fold change. We were using `apeglm`, but for multi-factor
+designs, we ought to be using `ashr` instead.
+
+To prepare for the lab, we will start with re-"shrinking" your differential gene
+expression data!
+
+Following last week's lab, we removed rows (genes) with minimal numbers of reads
+found in the entire row.
+
+1. Make sure to remove the rows from your `dds` (DESeq2 dataset), following last
+week's example
+   ```bash
+   good_rows <- rowSums(counts(dds)) >= 10
+   dds <- dds[good_rows,]
+   ```
+
+2. Now we are going to explicitly set the "base" comparison that we want to run.
+Think of this as the `control` value. In our dataset, there is no explicit `control`.
+This means that we need to pick a reference point, and I think the `Maine 21C` fits
+that perfectly!
+
+   So we will "relevel" our dataset accordingly.
+
+   ```bash
+   dds$group <- relevel(dds$group, ref = "Maine_21C")
+   dds <- DESeq(dds)
+   ```
+
+3. Now let's check for the differentially expressed genes in our dataset! Do recall
+that this is inherently a pairwise comparison. I do think it is important to decide
+which comparisons will actually make sense.
+
+   Let's start with the high and low temperature Maine samples!
+
+   ```bash
+   result_maine_21C_29C_ashr <- lfcShrink(dds, contrast=c("group", "Maine_29C", "Maine_21C"), type = 'ashr', alpha = 0.05)
+
+   summary(result_maine_21C_29C_ashr)
+   ```
+
+::: {.callout-caution title="Cautionary Note"}
+If you compare the `summary()` of the two different `lfcshrink` methods, you
+will notice quite a substantial difference in the number of DGE's that are inferred!
+
+This is totally normal and expected.
+
+`apeglm` is the recommended approach by the `DESeq2` authors, in part because it
+is ***very*** aggressive in its "shrinking". However, it does not handle interactions
+as well.
+
+Remember interactions are tricky and are found in many datasets. In our example,
+there is likely an interaction between geographic locaiton and response to stress.
+Most Mainers would tell you that 21C is already a pretty warm day, with 29C being
+a rare heatwave day (or it used to be), whereas 21C would be quite cold for Panama.
+
+This is an interaction that `apeglm` would be less good at tackling. That's where
+`ashr` comes in, as it handles multi-factor designs and interactions very well!
+
+At the end of the day, it is your choice, but it should be an informed choice!
+:::
+
+We are ready to visualize our data!
+
+## Visualizing DGE datasets with R
+Below are just some examples on how to prepare some reasonable visualizations for
+differential gene expression datasets, using `R`. I do want to mention that while this
+lab course does use `R`, I am by no means an expert (I'm definitely a fan of `python`
+almost any task). View this section as a reasonable guide on how to do some fundamental
+visualizations.
+
+As you explore your own datasets in this class, think about what sorts of visualizations
+are impactful and what you may like to see. We can work on these together in following
+sessions!
+
+Ready to dive in?
+
+1. We have built and linked our dataset names into our metadata table, but we can
+still make this better! We are going to make a new column, with the names being the
+geographyic location, temperature, and replicate (e.g., `Maine_21C_1`)
+
+   ```bash
+   samples$sample_name <- paste(samples$Geographic.Location, samples$Temperature, samples$Replicate, sep = "_")
+   ```
+
+2. Typically, the `dds` dataframe has unlabeled columns, but we want to make sure to
+link the columns to the sample those data represent
+
+   ```bash
+   colnames(dds) <- samples$sample_name
+   ```
+
+3. Now let's normalize the read counts, while updating the column names to be easier to follow.
+You will see `%>%`, which simply is the `R` version of the `|`. In your terminal `|`
+is known as a "pipe" character. It implies the the output of a task is passed along
+to the next task, where the first task is to the `left` of the `|` character. `R`
+allows us to do this too!
+
+   ```bash
+   normalized_counts <- counts(dds, normalized=T) %>%
+    data.frame() %>%
+     rownames_to_column(var="gene") %>%
+     as_tibble()
+   ```
+
+  We are saving a lot of steps into the `normalized_counts` variable. First, we
+  are generating a table of normalized counts. Then, using `%>%`, we are taking
+  those normalized counts, and converting them to a data-frame format. Afterwards,
+  we are renaming the rows to match their `gene` names. Finally, we are saving it
+  in a `tibble` format, which makes pretty tables.
+
+  A lot done in one small command! This is really cool and a common part of many
+  bioinformatic pipelines.
+
+4. Go ahead and use `head` to look at the top few rows of the `normalized_counts`
+table!
+
+   ```bash
+   head(normalized_counts)
+   ```
+
+5. We are about to build our heatmap! It is not a bad plan to pick out which color
+palette to use. I am a huge fan of cold-warm (blue-red), but there are so many to
+play with! We can specify the number of colors to be in our palette too!
+
+   ```bash
+   heat_colors <- rev(brewer.pal(6, "RdYlBu"))
+   ```
+
+6. Now let's make our heatmap, it's going to be intense!
+
+   ```bash
+   pheatmap(normalized_counts[2:13],
+         color = heat_colors,
+         cluster_rows = T,
+         cluster_cols = T,
+         show_rownames = F,
+         border_color = NA,
+         fontsize = 10,
+         scale = "row",
+         treeheight_row = 0,
+         height = 20)
+   ```
+
+   There is a lot in this command! We will talk about `slicing` in the lecture, but
+   that's what we are doing with our `normalized_counts` table! We are generating a
+   heatmap for columns 2-13, which correspond to our 12 samples!
+
+   - cluster_rows = T :: cluster the rows (genes) by their expression patterns
+   - cluster_cols = T :: cluster the columns (samples) by their expression patterns
+   - show_rownames = F :: do not label all 10,000+ rows ... that would be too much
+   - border_color = NA :: do not put a border around the figure
+   - fontsize = 10 :: font size (pretty self-explanatory)
+   - scale = "row" :: applies a z-score normalization (makes comparisons within
+   the row easier to interpret, by accounting for magnitude differences)
+   - treeheight_row = 0 :: remove the ridiculous dendrogram on the rows
+   - height = 20 :: size of the figure
+
+   Whew, this sure looks complicated!
+
+7. Feel free to interactively save these plots. I almost always do all my "additions"
+to these plots using other tools (Inkscape is great, free, and does everything
+Adobe Illustrator can do!).
+
+8. Now let's make a volcano plot! This is inherently pairwise, so we will use the
+`result_maine_21C_29C_ashr` data we already prepared today. First, we will update
+this table by adding `gene` as the first column header.
+
+   ```bash
+   res_df <- as.data.frame(result_maine_21C_29C_ashr) %>%
+      tibble::rownames_to_column("gene")
+   ```
+
+9. Now we need to clean our data a bit. We will start by removing any rows (genes)
+missing adjusted p-values. This should **not** remove any rows, but it is important
+to double check
+   ```bash
+   res_df <- res_df %>% filter(!is.na(padj))
+   ```
+
+10. Now let's define our significance thresholds! If a gene has a log2fold change
+of at least `1` and an adjusted p-value < 0.05, it will be labeled "UP" regulated. If
+log2-fold change is less than `-1` and an adjusted p-value < 0.05 then it will be labeled
+"DOWN" regulated. Otherwise, it is labeled as "NOT" having a difference.
+
+    ```bash
+    res_df <- res_df %>%
+      mutate(diffexpressed = case_when(
+      log2FoldChange > 1 & padj < 0.05 ~ "UP",
+      log2FoldChange < -1 & padj < 0.05 ~ "DOWN",
+      TRUE ~ "NOT"
+    ))
+
+    head(res_df)
+    ```
+
+11. Now we can make the plot! This command is frustratingly big. I will do my best
+to explain what is going on! Check the comments that are in the same line as each command.
+In this large plotting command, we use `+` to add another step in preparing our figure!
+
+    ```bash
+    ggplot(res_df, aes(x = log2FoldChange, y = -log10(padj), color = diffexpressed)) + # plots the points and colors them based on their "type" of expression
+      geom_point(alpha = 0.6, size = 1.5) + xlim(-2, 2) + # defines the size and opacity (alpha) of the points. alpha is NOT the p-value
+      scale_color_manual(values = c("DOWN" = "blue", "NOT" = "grey", "UP" = "red")) + # manually setting the colors for our DEGs
+      geom_vline(xintercept = c(-1, 1), linetype = "dashed") + # makes the x-axis log2-fold change lines at x = -1 and x = 1
+      geom_hline(yintercept = -log10(0.05), linetype = "dashed") + # makes the y-axis adjusted p-value line
+      theme_minimal() + # keeps the plot less crowded
+      labs(x = "log2 Fold Change",
+           y = "-log10 Adjusted p-value",
+           color = "Expression") # labeles the axes and legend
+
+
+    ```
+
+12. It is always a fantastic idea to backup your comparisons and the normalized counts
+tables. This way it is easy to get to and reload instead of having to re-do the
+analyses each time you want to interact with your data.
+
+    So let's save those tables.
+
+    ```bash
+    write.csv(result_maine_21C_29C_ashr, file.path(dir, "Maine_21C_29C.DGE.csv"), row.names = FALSE)
+
+    write.csv(normalized_counts, file.path(dir, "Dmel_NormCounts.DGE.csv"), row.names = FALSE)
+
+    save(dds, file = file.path(dir, "Dmel.DDS.rda"))
+    ```
+
+***
+
+## Gene Ontology Enrichment Analyses
+So far we have visualized our differential gene expression dataset, but we really need
+to still figure out what the different in gene functions may be between our samples!
+This is exactly what Gene Ontology Enrichment Analyses are for!
+
+1. If you have not already, load the `AnnotationHub` and `clusterProfiler` tools
+
+2. We are exceedingly fortunate that we do not need to do any extra work to prepare
+GO annotations for Drosophila. Instead, the GO terms are already prepared and we
+just need to provide some details to `clusterProfiler` for our analyses.
+
+   Let's use `AnnotationHub` to find the data for Drosophila.
+
+   First, we need to "initialize" `AnnotationHub`
+
+   ```bash
+   ah <- AnnotationHub()
+   ```
+
+3. Now we can search for Drosophila
+   ```bash
+   query(ah, c("Drosophila melanogaster", "OrgDb"))
+   ```
+
+   You will notice that at the bottom of the output is the line:
+   `retrieve record with 'object[["AH121952"]]'`
+
+   `AH121952` is the `accession number` for Drosophila's data!
+
+4. Grab the organism database using the given accession number
+   ```bash
+   org_db <- ah[["AH121952"]]
+   ```
+
+5. Let's make some smaller dataframes. One with ***all** the DEGs, one with the
+***up-regulated*** DEGs, and a final one with the **down-regulated*** DEGs. Remember,
+this is only for ONE pairwise comparison, which in this case is Maine's 29C versus 21C samples.
+   ```bash
+   sig_degs <- res_df %>% filter(diffexpressed != "NOT")
+   only_up_degs <- res_df %>% filter(diffexpressed == "UP")
+   only_down_degs <- res_df %>% filter(diffexpressed == "DOWN")
+   ```
+
+6. We truthfully, just need the gene names from each of these tables. However, if
+you recall from class, we need to know ALL the gene names too for our comparisons.
+This way we can determine if any given term is enriched relative to the "unvierse"
+of Drosophila's genes and gene ontologies!
+   ```bash
+   all_gene_names <- c(res_df$gene)
+   sig_deg_names <- c(sig_degs$gene)
+   sig_up_names <- c(only_up_degs$gene)
+   sig_down_names <- c(only_down_degs$gene)
+   ```
+
+   You can see that I try to be NOT-creative with the naming. I recommend keeping it
+   as straightforward as you can for yourself.
+
+7. While we created our database of gene names from the `GTF` file originally from
+NCBI's database, the gene names are really from `FlyBase` This is a standalone database
+that hosts the most up to date fly-related datasets and has its own naming. In fact,
+our gene names all start with  `Dmel_CG#####` and we need to trim off the `Dmel_`
+part. The rest are the same identifiers that `FlyBase` uses, which our organismal
+database is setup for too.
+   ```bash
+   clean_sig_deg_names <- unlist(lapply(sig_deg_names, function(x) gsub("Dmel_", "", x)))
+   clean_uni_names <- unlist(lapply(all_gene_names, function(x) gsub("Dmel_", "", x)))
+   clean_sig_up_names <- unlist(lapply(sig_up_names, function(x) gsub("Dmel_", "", x)))
+   clean_sig_down_names <- unlist(lapply(sig_down_names, function(x) gsub("Dmel_", "", x)))
+   ```
+
+8. Great! Our names for the genes are clean now! We can figure out the functional
+enrichment patterns in our dataset!
+
+   ```bash
+   ego <- enrichGO(
+    gene = clean_sig_deg_names,
+    universe = clean_uni_names,
+    OrgDb = org_db,
+    keyType = "FLYBASECG", # adjust keyType based on your input IDs
+    ont = "BP", # BP: Biological Process, MF: Molecular Function, CC: Cellular Component, ALL: get all of them!
+    pAdjustMethod = "BH",
+    qvalueCutoff = 0.05,
+    readable = TRUE)
+   ```
+
+   Again, there is a lot in this command and it's important to break it down.
+   - `gene =`: this is your set of "clean" query genes. This can be JUST the `up-regulated` genes or all the deg genes.
+   - `unverse =`: names of all the genes in the organism's "universe"
+   - `OrgDB = `: the organismal database from `AnnotationHub`
+   - `keyType =`: where the names come from. NOTE: I will help you with this if you need it!
+   - `ont =`: Gene ontology group
+   - pAdjustMethod = "BH": method for adjusting p-values for multiple comprisons (Benjamini-Hochberg method)
+   - `qvalueCutoff = 0.05`: like a p-value but emphasizes `false discovery rate`
+   - `readable = TRUE`: make the outputs readable!
+
+9. Let's make the dotplot to check out the enrichment!
+   ```bash
+   dotplot(ego, showCategory=50)
+   ```
+
+10. Let's stop for a moment. This plot is showing us the GO terms enriched in our
+differential gene expression data. They are NOT showing us those that are specifically
+up-regulated or down-regulated.
+
+    Repeat `Steps 8 & 9`, with the significantly up-regulated and down-regulated
+    gene sets and see what you get!
+
+    I recommend updating the `ego` variable to something specific to the up/down
+    regulated genes. I like to use: `sig_up_ego` and `sig_down_ego`, so I can quickly
+    call on these plots without having to run any additional analyses.
+
+    I find these fascinating!
+
+11. Before we move on, you can save the results for ALL of these data.
+    ```bash
+    goa_summary <- data.frame(ego)
+    up_goa_summary <- data.frame(sig_up_ego)
+    down_goa_summary <- data.frame(sig_down_ego)
+
+    write.csv(goa_summary, file.path(dir, "Maine_21C_29C.All_DEGs.GOEnrichment.csv"))
+    write.csv(up_goa_summary, file.path(dir, "Maine_21C_29C.UpReg_DEGs.GOEnrichment.csv"))
+    write.csv(up_goa_summary, file.path(dir, "Maine_21C_29C.DownReg_DEGs.GOEnrichment.csv"))
+    ```
+
+12. Lastly, the final plot we are going to make is a bit weird. It is a network plot,
+but instead of showing interactions, it makes networks of genes with similar "functions"
+based on GO-term similarity. I think they look really interesting and ***can*** be
+informative (they are not always helpful).
+
+    ```bash
+    ego_sim <- enrichplot::pairwise_termsim(ego)
+    emapplot(ego_sim, showCategory = 50)
+    ```
+
+    When looking at these terms, it is not very clear how they correspond to heat
+    stress. It may be that exploring the enrichment at the level of "Biological Process"
+    is too broad. You should explore the enrichment with another GO term "level"
+
+And that's it! We will talk about natural follow up steps that are online in the
+lab itself. It is critical to mention that you should use these guided labs as an
+**outline** of how to do differential gene expression analyses. There are so many
+other considerations outside the scope of this lab to consider, but the goal is to
+"break through" that initial barrier! As someone that loves biochemistry, I like
+to think of the class as giving you the "activation energy" to catalyze your own learning :)
+
+***
+## Other cool visualizations (played with too late on Sunday to break down)
+
+1. Re-run the `enrichGO` for your up-regulated genes (`sig_up_ego`), with `ont = ALL`
+
+2. Then run the following command:
+   ```bash
+   p_facet <- barplot(
+     sig_up_ego,
+     x = "Count",
+     showCategory = 15,
+     split = "ONTOLOGY") +
+     aes(fill = ONTOLOGY) +
+     scale_fill_brewer(palette = "Set2") +
+     enrichplot::autofacet(by = "row", scales = "free")
+
+   p_facet + scale_y_discrete()
+   ```
+   
+***
+
+# Quick Start Guide
+
+***
+
+This is for your reference in the future, so you don't have to slog through all the work above!
+Also, what a great way to practice this week :)
+
+Below, the steps are numbered with emtpy code blocks below them. Copy-paste your commands there!
+
+With the packages installed, you will not need to run the installation a second time!

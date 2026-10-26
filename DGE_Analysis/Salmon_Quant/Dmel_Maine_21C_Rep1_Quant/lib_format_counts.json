@@ -1,0 +1,26 @@
+{
+  "read_files": [
+    "/sciclone/scr10/xxmaureralcala/Biol404L/raw_read_prep/Dmel_Maine_21C_Rep1.Fwd.20q.80nt.fastq.gz",
+    "/sciclone/scr10/xxmaureralcala/Biol404L/raw_read_prep/Dmel_Maine_21C_Rep1.Rev.20q.80nt.fastq.gz"
+  ],
+  "expected_format": "IU",
+  "compatible_fragment_ratio": 1.0,
+  "num_compatible_fragments": 20820790,
+  "num_incompatible_fragments": 0,
+  "num_assigned_fragments": 20820790,
+  "num_frags_with_concordant_consistent_mappings": 20469907,
+  "num_frags_with_inconsistent_or_orphan_mappings": 435724,
+  "strand_mapping_bias": 0.49687284851855945,
+  "IU": 0,
+  "ISF": 10170941,
+  "ISR": 10298966,
+  "OU": 0,
+  "OSF": 0,
+  "OSR": 0,
+  "MU": 0,
+  "MSF": 0,
+  "MSR": 0,
+  "U": 0,
+  "SF": 277953,
+  "SR": 157771
+}

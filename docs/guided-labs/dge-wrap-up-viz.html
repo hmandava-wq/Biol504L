@@ -1,0 +1,894 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.8.27">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="YOUR-NAME">
+<meta name="dcterms.date" content="2026-10-19">
+<meta name="keywords" content="deseq2, r, expression">
+
+<title>DGE Vizualizations and Follow-up – My lab notebook</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<script src="../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../site_libs/quarto-html/axe/axe-check.js" type="module"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-ed96de9b727972fe78a7b5d16c58bf87.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap-99b461468016d36f49710bb6778245d6.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+
+<link rel="stylesheet" href="../styles.css">
+</head>
+
+<body class="nav-fixed quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="../index.html">
+    <span class="navbar-title">My lab notebook</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../guided-labs/index.html"> 
+<span class="menu-text">Guided Labs</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../weekly-notes/index.html"> 
+<span class="menu-text">Weekly notes</span></a>
+  </li>  
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-projects" role="link" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">Projects</span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-projects">    
+        <li>
+    <a class="dropdown-item" href="../projects/how-to.html">
+ <span class="dropdown-text">How to create new projects</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../projects/Semester-Project/index.html">
+ <span class="dropdown-text">Semester-Project</span></a>
+  </li>  
+    </ul>
+  </li>
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#goals-of-the-lab-overall" id="toc-goals-of-the-lab-overall" class="nav-link active" data-scroll-target="#goals-of-the-lab-overall">Goals of the lab overall</a>
+  <ul class="collapse">
+  <li><a href="#for-your-success-in-the-lab" id="toc-for-your-success-in-the-lab" class="nav-link" data-scroll-target="#for-your-success-in-the-lab">For your success in the lab</a></li>
+  </ul></li>
+  <li><a href="#lab-deep-dive" id="toc-lab-deep-dive" class="nav-link" data-scroll-target="#lab-deep-dive">Lab Deep-dive</a>
+  <ul class="collapse">
+  <li><a href="#overview-of-todays-lab" id="toc-overview-of-todays-lab" class="nav-link" data-scroll-target="#overview-of-todays-lab">Overview of today’s lab</a></li>
+  <li><a href="#moving-files-deseq2-differential-gene-expression" id="toc-moving-files-deseq2-differential-gene-expression" class="nav-link" data-scroll-target="#moving-files-deseq2-differential-gene-expression">Moving files, <code>DESeq2</code>, Differential Gene Expression!</a></li>
+  <li><a href="#installing-the-necessary-r-packages" id="toc-installing-the-necessary-r-packages" class="nav-link" data-scroll-target="#installing-the-necessary-r-packages">Installing the necessary R packages</a></li>
+  <li><a href="#preparing-todays-lab" id="toc-preparing-todays-lab" class="nav-link" data-scroll-target="#preparing-todays-lab">Preparing today’s lab</a></li>
+  <li><a href="#visualizing-dge-datasets-with-r" id="toc-visualizing-dge-datasets-with-r" class="nav-link" data-scroll-target="#visualizing-dge-datasets-with-r">Visualizing DGE datasets with R</a></li>
+  <li><a href="#gene-ontology-enrichment-analyses" id="toc-gene-ontology-enrichment-analyses" class="nav-link" data-scroll-target="#gene-ontology-enrichment-analyses">Gene Ontology Enrichment Analyses</a></li>
+  <li><a href="#other-cool-visualizations-played-with-too-late-on-sunday-to-break-down" id="toc-other-cool-visualizations-played-with-too-late-on-sunday-to-break-down" class="nav-link" data-scroll-target="#other-cool-visualizations-played-with-too-late-on-sunday-to-break-down">Other cool visualizations (played with too late on Sunday to break down)</a></li>
+  </ul></li>
+  <li><a href="#quick-start-guide" id="toc-quick-start-guide" class="nav-link" data-scroll-target="#quick-start-guide">Quick Start Guide</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">DGE Vizualizations and Follow-up</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>YOUR-NAME </p>
+          </div>
+  </div>
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">October 19, 2026</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+<div>
+  <div class="keywords">
+    <div class="block-title">Keywords</div>
+    <p>deseq2, r, expression</p>
+  </div>
+</div>
+
+</header>
+
+
+<section id="goals-of-the-lab-overall" class="level1">
+<h1>Goals of the lab overall</h1>
+<p>The skills acquired in this lab class are crucial for bioinformatic tasks using molecular data, such as data analysis, scripting, and working in high-performance computing (HPC) environments. My hope is that you don’t just type the commands into the terminal and move on – I would like you to <strong><em>think</em></strong> about what these commands are doing and start imagining how they could be useful in analyzing your own data.</p>
+<section id="for-your-success-in-the-lab" class="level2">
+<h2 class="anchored" data-anchor-id="for-your-success-in-the-lab">For your success in the lab</h2>
+<p>Each lab is inteded to be a reference point for you on various bioinformatic tasks. To make the most of these labs, please treat them like a <strong>personal resource</strong>, so adjust any specific commands accordingly.</p>
+<hr>
+</section>
+</section>
+<section id="lab-deep-dive" class="level1">
+<h1>Lab Deep-dive</h1>
+<hr>
+<section id="overview-of-todays-lab" class="level3">
+<h3 class="anchored" data-anchor-id="overview-of-todays-lab">Overview of today’s lab</h3>
+<p>Today’s lab will focus on wrapping up our differential gene expression analysis visualization and follow-up analyses. This lab’s goal is intended to provide the basis for “final” figures and how to perform a classic gene ontology enrichment analysis. Given that this lab will be shorter, it is also the best time to get any additional help, while the work is still more fresh.</p>
+<p>Make sure to ask questions about the visualizations and analyses, as needed! Remember, that repetition is really powerful, as it really is <strong>practice, practice, practice</strong>!</p>
+<p>Make sure to ask questions as needed!</p>
+</section>
+<section id="moving-files-deseq2-differential-gene-expression" class="level3">
+<h3 class="anchored" data-anchor-id="moving-files-deseq2-differential-gene-expression">Moving files, <code>DESeq2</code>, Differential Gene Expression!</h3>
+<ul class="task-list">
+<li><label><input type="checkbox">Installing R packages</label></li>
+<li><label><input type="checkbox">Re-assessing differential gene expression!</label></li>
+<li><label><input type="checkbox">Data visualization!</label></li>
+<li><label><input type="checkbox">Gene ontology enrichment analysis</label></li>
+</ul>
+<hr>
+</section>
+<section id="installing-the-necessary-r-packages" class="level2">
+<h2 class="anchored" data-anchor-id="installing-the-necessary-r-packages">Installing the necessary R packages</h2>
+<p>Following last week’s steps for installations, we need to install a few more packages for today.</p>
+<p>Using BiocManager, install: - [ ] clusterProfiler - [ ] AnnotationHub - [ ] ashr</p>
+<p>We also need to install a few “normal” packages that may not be pre-installed yet - [ ] ggplot2 - [ ] dplyr - [ ] RColorBrewer - [ ] tibble - [ ] tidyr - [ ] scales</p>
+<p>Once installed, make sure to load the libraries too! You can follow the example below</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">library</span><span class="er">(</span><span class="ex">ggplot2</span><span class="kw">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<hr>
+</section>
+<section id="preparing-todays-lab" class="level2">
+<h2 class="anchored" data-anchor-id="preparing-todays-lab">Preparing today’s lab</h2>
+<p>Today, we will re-work some of our differential gene expression analyses from last week. There are two reasons for this: 1) practice! and 2) there is a more appropriate means to shrink the log2-fold change. We were using <code>apeglm</code>, but for multi-factor designs, we ought to be using <code>ashr</code> instead.</p>
+<p>To prepare for the lab, we will start with re-“shrinking” your differential gene expression data!</p>
+<p>Following last week’s lab, we removed rows (genes) with minimal numbers of reads found in the entire row.</p>
+<ol type="1">
+<li><p>Make sure to remove the rows from your <code>dds</code> (DESeq2 dataset), following last week’s example</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="ex">good_rows</span> <span class="op">&lt;</span>- rowSums<span class="er">(</span><span class="ex">counts</span><span class="er">(</span><span class="ex">dds</span><span class="kw">))</span> <span class="op">&gt;</span>= <span class="ex">10</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="ex">dds</span> <span class="op">&lt;</span>- dds<span class="pp">[</span><span class="ss">good_rows,</span><span class="pp">]</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div></li>
+<li><p>Now we are going to explicitly set the “base” comparison that we want to run. Think of this as the <code>control</code> value. In our dataset, there is no explicit <code>control</code>. This means that we need to pick a reference point, and I think the <code>Maine 21C</code> fits that perfectly!</p>
+<p>So we will “relevel” our dataset accordingly.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="ex">dds</span><span class="va">$group</span> <span class="op">&lt;</span>- relevel<span class="er">(</span><span class="ex">dds</span><span class="va">$group</span><span class="ex">,</span> ref = <span class="st">"Maine_21C"</span><span class="kw">)</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="ex">dds</span> <span class="op">&lt;</span>- DESeq<span class="er">(</span><span class="ex">dds</span><span class="kw">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div></li>
+<li><p>Now let’s check for the differentially expressed genes in our dataset! Do recall that this is inherently a pairwise comparison. I do think it is important to decide which comparisons will actually make sense.</p>
+<p>Let’s start with the high and low temperature Maine samples!</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="ex">result_maine_21C_29C_ashr</span> <span class="op">&lt;</span>- lfcShrink<span class="er">(</span><span class="ex">dds,</span> contrast=c<span class="er">(</span><span class="st">"group"</span><span class="ex">,</span> <span class="st">"Maine_29C"</span>, <span class="st">"Maine_21C"</span><span class="kw">)</span><span class="ex">,</span> type = <span class="st">'ashr'</span>, alpha = 0.05<span class="kw">)</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="ex">summary</span><span class="er">(</span><span class="ex">result_maine_21C_29C_ashr</span><span class="kw">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div></li>
+</ol>
+<div class="callout callout-style-default callout-caution callout-titled" title="Cautionary Note">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Caution</span>Cautionary Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>If you compare the <code>summary()</code> of the two different <code>lfcshrink</code> methods, you will notice quite a substantial difference in the number of DGE’s that are inferred!</p>
+<p>This is totally normal and expected.</p>
+<p><code>apeglm</code> is the recommended approach by the <code>DESeq2</code> authors, in part because it is <strong><em>very</em></strong> aggressive in its “shrinking”. However, it does not handle interactions as well.</p>
+<p>Remember interactions are tricky and are found in many datasets. In our example, there is likely an interaction between geographic locaiton and response to stress. Most Mainers would tell you that 21C is already a pretty warm day, with 29C being a rare heatwave day (or it used to be), whereas 21C would be quite cold for Panama.</p>
+<p>This is an interaction that <code>apeglm</code> would be less good at tackling. That’s where <code>ashr</code> comes in, as it handles multi-factor designs and interactions very well!</p>
+<p>At the end of the day, it is your choice, but it should be an informed choice!</p>
+</div>
+</div>
+<p>We are ready to visualize our data!</p>
+</section>
+<section id="visualizing-dge-datasets-with-r" class="level2">
+<h2 class="anchored" data-anchor-id="visualizing-dge-datasets-with-r">Visualizing DGE datasets with R</h2>
+<p>Below are just some examples on how to prepare some reasonable visualizations for differential gene expression datasets, using <code>R</code>. I do want to mention that while this lab course does use <code>R</code>, I am by no means an expert (I’m definitely a fan of <code>python</code> almost any task). View this section as a reasonable guide on how to do some fundamental visualizations.</p>
+<p>As you explore your own datasets in this class, think about what sorts of visualizations are impactful and what you may like to see. We can work on these together in following sessions!</p>
+<p>Ready to dive in?</p>
+<ol type="1">
+<li><p>We have built and linked our dataset names into our metadata table, but we can still make this better! We are going to make a new column, with the names being the geographyic location, temperature, and replicate (e.g., <code>Maine_21C_1</code>)</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="ex">samples</span><span class="va">$sample_name</span> <span class="op">&lt;</span>- paste<span class="er">(</span><span class="ex">samples</span><span class="va">$Geographic</span><span class="ex">.Location,</span> samples<span class="va">$Temperature</span>, samples<span class="va">$Replicate</span>, sep = <span class="st">"_"</span><span class="kw">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div></li>
+<li><p>Typically, the <code>dds</code> dataframe has unlabeled columns, but we want to make sure to link the columns to the sample those data represent</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="ex">colnames</span><span class="er">(</span><span class="ex">dds</span><span class="kw">)</span> <span class="op">&lt;</span>- <span class="ex">samples</span><span class="va">$sample_name</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div></li>
+<li><p>Now let’s normalize the read counts, while updating the column names to be easier to follow. You will see <code>%&gt;%</code>, which simply is the <code>R</code> version of the <code>|</code>. In your terminal <code>|</code> is known as a “pipe” character. It implies the the output of a task is passed along to the next task, where the first task is to the <code>left</code> of the <code>|</code> character. <code>R</code> allows us to do this too!</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="ex">normalized_counts</span> <span class="op">&lt;</span>- counts<span class="er">(</span><span class="ex">dds,</span> normalized=T<span class="kw">)</span> <span class="ex">%</span><span class="op">&gt;</span>%</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a> <span class="fu">data.frame()</span> <span class="ex">%</span><span class="op">&gt;</span>%</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>  <span class="ex">rownames_to_column</span><span class="er">(</span><span class="va">var</span><span class="op">=</span><span class="st">"gene"</span><span class="kw">)</span> <span class="ex">%</span><span class="op">&gt;</span>%</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as_tibble()</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div></li>
+</ol>
+<p>We are saving a lot of steps into the <code>normalized_counts</code> variable. First, we are generating a table of normalized counts. Then, using <code>%&gt;%</code>, we are taking those normalized counts, and converting them to a data-frame format. Afterwards, we are renaming the rows to match their <code>gene</code> names. Finally, we are saving it in a <code>tibble</code> format, which makes pretty tables.</p>
+<p>A lot done in one small command! This is really cool and a common part of many bioinformatic pipelines.</p>
+<ol start="4" type="1">
+<li><p>Go ahead and use <code>head</code> to look at the top few rows of the <code>normalized_counts</code> table!</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span><span class="er">(</span><span class="ex">normalized_counts</span><span class="kw">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div></li>
+<li><p>We are about to build our heatmap! It is not a bad plan to pick out which color palette to use. I am a huge fan of cold-warm (blue-red), but there are so many to play with! We can specify the number of colors to be in our palette too!</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="ex">heat_colors</span> <span class="op">&lt;</span>- rev<span class="er">(</span><span class="ex">brewer.pal</span><span class="er">(</span><span class="ex">6,</span> <span class="st">"RdYlBu"</span><span class="kw">))</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div></li>
+<li><p>Now let’s make our heatmap, it’s going to be intense!</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="ex">pheatmap</span><span class="er">(</span><span class="va">normalized_counts</span><span class="op">[</span><span class="dv">2</span>:13<span class="op">]</span><span class="ex">,</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>      <span class="ex">color</span> = heat_colors,</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>      <span class="ex">cluster_rows</span> = T,</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>      <span class="ex">cluster_cols</span> = T,</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>      <span class="ex">show_rownames</span> = F,</span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>      <span class="ex">border_color</span> = NA,</span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>      <span class="ex">fontsize</span> = 10,</span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>      <span class="ex">scale</span> = <span class="st">"row"</span>,</span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>      <span class="ex">treeheight_row</span> = 0,</span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>      <span class="ex">height</span> = 20<span class="kw">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>There is a lot in this command! We will talk about <code>slicing</code> in the lecture, but that’s what we are doing with our <code>normalized_counts</code> table! We are generating a heatmap for columns 2-13, which correspond to our 12 samples!</p>
+<ul>
+<li>cluster_rows = T :: cluster the rows (genes) by their expression patterns</li>
+<li>cluster_cols = T :: cluster the columns (samples) by their expression patterns</li>
+<li>show_rownames = F :: do not label all 10,000+ rows … that would be too much</li>
+<li>border_color = NA :: do not put a border around the figure</li>
+<li>fontsize = 10 :: font size (pretty self-explanatory)</li>
+<li>scale = “row” :: applies a z-score normalization (makes comparisons within the row easier to interpret, by accounting for magnitude differences)</li>
+<li>treeheight_row = 0 :: remove the ridiculous dendrogram on the rows</li>
+<li>height = 20 :: size of the figure</li>
+</ul>
+<p>Whew, this sure looks complicated!</p></li>
+<li><p>Feel free to interactively save these plots. I almost always do all my “additions” to these plots using other tools (Inkscape is great, free, and does everything Adobe Illustrator can do!).</p></li>
+<li><p>Now let’s make a volcano plot! This is inherently pairwise, so we will use the <code>result_maine_21C_29C_ashr</code> data we already prepared today. First, we will update this table by adding <code>gene</code> as the first column header.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="ex">res_df</span> <span class="op">&lt;</span>- as.data.frame<span class="er">(</span><span class="ex">result_maine_21C_29C_ashr</span><span class="kw">)</span> <span class="ex">%</span><span class="op">&gt;</span>%</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>   <span class="ex">tibble::rownames_to_column</span><span class="er">(</span><span class="st">"gene"</span><span class="kw">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div></li>
+<li><p>Now we need to clean our data a bit. We will start by removing any rows (genes) missing adjusted p-values. This should <strong>not</strong> remove any rows, but it is important to double check</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb12"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="ex">res_df</span> <span class="op">&lt;</span>- res_df %<span class="op">&gt;</span>% filter<span class="er">(</span><span class="ex">!is.na</span><span class="er">(</span><span class="ex">padj</span><span class="kw">))</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div></li>
+<li><p>Now let’s define our significance thresholds! If a gene has a log2fold change of at least <code>1</code> and an adjusted p-value &lt; 0.05, it will be labeled “UP” regulated. If log2-fold change is less than <code>-1</code> and an adjusted p-value &lt; 0.05 then it will be labeled “DOWN” regulated. Otherwise, it is labeled as “NOT” having a difference.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb13"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="ex">res_df</span> <span class="op">&lt;</span>- res_df %<span class="op">&gt;</span>%</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>  <span class="ex">mutate</span><span class="er">(</span><span class="ex">diffexpressed</span> = case_when<span class="er">(</span></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>  <span class="ex">log2FoldChange</span> <span class="op">&gt;</span> 1 <span class="kw">&amp;</span> <span class="ex">padj</span> <span class="op">&lt;</span> 0.05 ~ <span class="st">"UP"</span>,</span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>  <span class="ex">log2FoldChange</span> <span class="op">&lt;</span> -1 <span class="kw">&amp;</span> <span class="ex">padj</span> <span class="op">&lt;</span> 0.05 ~ <span class="st">"DOWN"</span>,</span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>  <span class="ex">TRUE</span> ~ <span class="st">"NOT"</span></span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a><span class="kw">))</span></span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span><span class="er">(</span><span class="ex">res_df</span><span class="kw">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div></li>
+<li><p>Now we can make the plot! This command is frustratingly big. I will do my best to explain what is going on! Check the comments that are in the same line as each command. In this large plotting command, we use <code>+</code> to add another step in preparing our figure!</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb14"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="ex">ggplot</span><span class="er">(</span><span class="ex">res_df,</span> aes<span class="er">(</span><span class="ex">x</span> = log2FoldChange, y = <span class="at">-log10</span><span class="er">(</span><span class="ex">padj</span><span class="kw">)</span><span class="ex">,</span> color = diffexpressed<span class="kw">))</span> <span class="ex">+</span> <span class="co"># plots the points and colors them based on their "type" of expression</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>  <span class="ex">geom_point</span><span class="er">(</span><span class="ex">alpha</span> = 0.6, size = 1.5<span class="kw">)</span> <span class="ex">+</span> xlim<span class="er">(</span><span class="ex">-2,</span> 2<span class="kw">)</span> <span class="ex">+</span> <span class="co"># defines the size and opacity (alpha) of the points. alpha is NOT the p-value</span></span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>  <span class="ex">scale_color_manual</span><span class="er">(</span><span class="ex">values</span> = c<span class="er">(</span><span class="st">"DOWN"</span> = <span class="st">"blue"</span>, <span class="st">"NOT"</span> = <span class="st">"grey"</span>, <span class="st">"UP"</span> = <span class="st">"red"</span><span class="kw">))</span> <span class="ex">+</span> <span class="co"># manually setting the colors for our DEGs</span></span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>  <span class="ex">geom_vline</span><span class="er">(</span><span class="ex">xintercept</span> = c<span class="er">(</span><span class="ex">-1,</span> 1<span class="kw">)</span><span class="ex">,</span> linetype = <span class="st">"dashed"</span><span class="kw">)</span> <span class="ex">+</span> <span class="co"># makes the x-axis log2-fold change lines at x = -1 and x = 1</span></span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>  <span class="ex">geom_hline</span><span class="er">(</span><span class="ex">yintercept</span> = <span class="at">-log10</span><span class="er">(</span><span class="ex">0.05</span><span class="kw">)</span><span class="ex">,</span> linetype = <span class="st">"dashed"</span><span class="kw">)</span> <span class="ex">+</span> <span class="co"># makes the y-axis adjusted p-value line</span></span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal()</span> <span class="ex">+</span> <span class="co"># keeps the plot less crowded</span></span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>  <span class="ex">labs</span><span class="er">(</span><span class="ex">x</span> = <span class="st">"log2 Fold Change"</span>,</span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a>       <span class="ex">y</span> = <span class="st">"-log10 Adjusted p-value"</span>,</span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a>       <span class="ex">color</span> = <span class="st">"Expression"</span><span class="kw">)</span> <span class="co"># labeles the axes and legend</span></span>
+<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div></li>
+<li><p>It is always a fantastic idea to backup your comparisons and the normalized counts tables. This way it is easy to get to and reload instead of having to re-do the analyses each time you want to interact with your data.</p>
+<p>So let’s save those tables.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb15"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="ex">write.csv</span><span class="er">(</span><span class="ex">result_maine_21C_29C_ashr,</span> file.path<span class="er">(</span><span class="fu">dir</span>, <span class="st">"Maine_21C_29C.DGE.csv"</span><span class="kw">)</span><span class="ex">,</span> row.names = FALSE<span class="kw">)</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a><span class="ex">write.csv</span><span class="er">(</span><span class="ex">normalized_counts,</span> file.path<span class="er">(</span><span class="fu">dir</span>, <span class="st">"Dmel_NormCounts.DGE.csv"</span><span class="kw">)</span><span class="ex">,</span> row.names = FALSE<span class="kw">)</span></span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a><span class="ex">save</span><span class="er">(</span><span class="ex">dds,</span> file = file.path<span class="er">(</span><span class="fu">dir</span>, <span class="st">"Dmel.DDS.rda"</span><span class="kw">))</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div></li>
+</ol>
+<hr>
+</section>
+<section id="gene-ontology-enrichment-analyses" class="level2">
+<h2 class="anchored" data-anchor-id="gene-ontology-enrichment-analyses">Gene Ontology Enrichment Analyses</h2>
+<p>So far we have visualized our differential gene expression dataset, but we really need to still figure out what the different in gene functions may be between our samples! This is exactly what Gene Ontology Enrichment Analyses are for!</p>
+<ol type="1">
+<li><p>If you have not already, load the <code>AnnotationHub</code> and <code>clusterProfiler</code> tools</p></li>
+<li><p>We are exceedingly fortunate that we do not need to do any extra work to prepare GO annotations for Drosophila. Instead, the GO terms are already prepared and we just need to provide some details to <code>clusterProfiler</code> for our analyses.</p>
+<p>Let’s use <code>AnnotationHub</code> to find the data for Drosophila.</p>
+<p>First, we need to “initialize” <code>AnnotationHub</code></p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb16"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="ex">ah</span> <span class="op">&lt;</span>- AnnotationHub<span class="er">(</span><span class="kw">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div></li>
+<li><p>Now we can search for Drosophila</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb17"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="ex">query</span><span class="er">(</span><span class="ex">ah,</span> c<span class="er">(</span><span class="st">"Drosophila melanogaster"</span><span class="ex">,</span> <span class="st">"OrgDb"</span><span class="kw">))</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>You will notice that at the bottom of the output is the line: <code>retrieve record with 'object[["AH121952"]]'</code></p>
+<p><code>AH121952</code> is the <code>accession number</code> for Drosophila’s data!</p></li>
+<li><p>Grab the organism database using the given accession number</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb18"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="ex">org_db</span> <span class="op">&lt;</span>- ah[<span class="pp">[</span><span class="st">"AH121952"</span><span class="pp">]</span>]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div></li>
+<li><p>Let’s make some smaller dataframes. One with <em><strong>all</strong> the DEGs, one with the </em><strong>up-regulated</strong>* DEGs, and a final one with the <strong>down-regulated</strong>* DEGs. Remember, this is only for ONE pairwise comparison, which in this case is Maine’s 29C versus 21C samples.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb19"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="ex">sig_degs</span> <span class="op">&lt;</span>- res_df %<span class="op">&gt;</span>% filter<span class="er">(</span><span class="ex">diffexpressed</span> != <span class="st">"NOT"</span><span class="kw">)</span></span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="ex">only_up_degs</span> <span class="op">&lt;</span>- res_df %<span class="op">&gt;</span>% filter<span class="er">(</span><span class="ex">diffexpressed</span> == <span class="st">"UP"</span><span class="kw">)</span></span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a><span class="ex">only_down_degs</span> <span class="op">&lt;</span>- res_df %<span class="op">&gt;</span>% filter<span class="er">(</span><span class="ex">diffexpressed</span> == <span class="st">"DOWN"</span><span class="kw">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div></li>
+<li><p>We truthfully, just need the gene names from each of these tables. However, if you recall from class, we need to know ALL the gene names too for our comparisons. This way we can determine if any given term is enriched relative to the “unvierse” of Drosophila’s genes and gene ontologies!</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb20"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="ex">all_gene_names</span> <span class="op">&lt;</span>- c<span class="er">(</span><span class="ex">res_df</span><span class="va">$gene</span><span class="kw">)</span></span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a><span class="ex">sig_deg_names</span> <span class="op">&lt;</span>- c<span class="er">(</span><span class="ex">sig_degs</span><span class="va">$gene</span><span class="kw">)</span></span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a><span class="ex">sig_up_names</span> <span class="op">&lt;</span>- c<span class="er">(</span><span class="ex">only_up_degs</span><span class="va">$gene</span><span class="kw">)</span></span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a><span class="ex">sig_down_names</span> <span class="op">&lt;</span>- c<span class="er">(</span><span class="ex">only_down_degs</span><span class="va">$gene</span><span class="kw">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>You can see that I try to be NOT-creative with the naming. I recommend keeping it as straightforward as you can for yourself.</p></li>
+<li><p>While we created our database of gene names from the <code>GTF</code> file originally from NCBI’s database, the gene names are really from <code>FlyBase</code> This is a standalone database that hosts the most up to date fly-related datasets and has its own naming. In fact, our gene names all start with <code>Dmel_CG#####</code> and we need to trim off the <code>Dmel_</code> part. The rest are the same identifiers that <code>FlyBase</code> uses, which our organismal database is setup for too.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb21"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="ex">clean_sig_deg_names</span> <span class="op">&lt;</span>- unlist<span class="er">(</span><span class="ex">lapply</span><span class="er">(</span><span class="ex">sig_deg_names,</span> function<span class="er">(</span><span class="ex">x</span><span class="kw">)</span> <span class="ex">gsub</span><span class="er">(</span><span class="st">"Dmel_"</span><span class="ex">,</span> <span class="st">""</span>, x<span class="kw">)))</span></span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a><span class="ex">clean_uni_names</span> <span class="op">&lt;</span>- unlist<span class="er">(</span><span class="ex">lapply</span><span class="er">(</span><span class="ex">all_gene_names,</span> function<span class="er">(</span><span class="ex">x</span><span class="kw">)</span> <span class="ex">gsub</span><span class="er">(</span><span class="st">"Dmel_"</span><span class="ex">,</span> <span class="st">""</span>, x<span class="kw">)))</span></span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a><span class="ex">clean_sig_up_names</span> <span class="op">&lt;</span>- unlist<span class="er">(</span><span class="ex">lapply</span><span class="er">(</span><span class="ex">sig_up_names,</span> function<span class="er">(</span><span class="ex">x</span><span class="kw">)</span> <span class="ex">gsub</span><span class="er">(</span><span class="st">"Dmel_"</span><span class="ex">,</span> <span class="st">""</span>, x<span class="kw">)))</span></span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a><span class="ex">clean_sig_down_names</span> <span class="op">&lt;</span>- unlist<span class="er">(</span><span class="ex">lapply</span><span class="er">(</span><span class="ex">sig_down_names,</span> function<span class="er">(</span><span class="ex">x</span><span class="kw">)</span> <span class="ex">gsub</span><span class="er">(</span><span class="st">"Dmel_"</span><span class="ex">,</span> <span class="st">""</span>, x<span class="kw">)))</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div></li>
+<li><p>Great! Our names for the genes are clean now! We can figure out the functional enrichment patterns in our dataset!</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb22"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="ex">ego</span> <span class="op">&lt;</span>- enrichGO<span class="er">(</span></span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a> <span class="ex">gene</span> = clean_sig_deg_names,</span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a> <span class="ex">universe</span> = clean_uni_names,</span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a> <span class="ex">OrgDb</span> = org_db,</span>
+<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a> <span class="ex">keyType</span> = <span class="st">"FLYBASECG"</span>, <span class="co"># adjust keyType based on your input IDs</span></span>
+<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a> <span class="ex">ont</span> = <span class="st">"BP"</span>, <span class="co"># BP: Biological Process, MF: Molecular Function, CC: Cellular Component, ALL: get all of them!</span></span>
+<span id="cb22-7"><a href="#cb22-7" aria-hidden="true" tabindex="-1"></a> <span class="ex">pAdjustMethod</span> = <span class="st">"BH"</span>,</span>
+<span id="cb22-8"><a href="#cb22-8" aria-hidden="true" tabindex="-1"></a> <span class="ex">qvalueCutoff</span> = 0.05,</span>
+<span id="cb22-9"><a href="#cb22-9" aria-hidden="true" tabindex="-1"></a> <span class="ex">readable</span> = TRUE<span class="kw">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Again, there is a lot in this command and it’s important to break it down.</p>
+<ul>
+<li><code>gene =</code>: this is your set of “clean” query genes. This can be JUST the <code>up-regulated</code> genes or all the deg genes.</li>
+<li><code>unverse =</code>: names of all the genes in the organism’s “universe”</li>
+<li><code>OrgDB =</code>: the organismal database from <code>AnnotationHub</code></li>
+<li><code>keyType =</code>: where the names come from. NOTE: I will help you with this if you need it!</li>
+<li><code>ont =</code>: Gene ontology group</li>
+<li>pAdjustMethod = “BH”: method for adjusting p-values for multiple comprisons (Benjamini-Hochberg method)</li>
+<li><code>qvalueCutoff = 0.05</code>: like a p-value but emphasizes <code>false discovery rate</code></li>
+<li><code>readable = TRUE</code>: make the outputs readable!</li>
+</ul></li>
+<li><p>Let’s make the dotplot to check out the enrichment!</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb23"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="ex">dotplot</span><span class="er">(</span><span class="ex">ego,</span> showCategory=50<span class="kw">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div></li>
+<li><p>Let’s stop for a moment. This plot is showing us the GO terms enriched in our differential gene expression data. They are NOT showing us those that are specifically up-regulated or down-regulated.</p>
+<p>Repeat <code>Steps 8 &amp; 9</code>, with the significantly up-regulated and down-regulated gene sets and see what you get!</p>
+<p>I recommend updating the <code>ego</code> variable to something specific to the up/down regulated genes. I like to use: <code>sig_up_ego</code> and <code>sig_down_ego</code>, so I can quickly call on these plots without having to run any additional analyses.</p>
+<p>I find these fascinating!</p></li>
+<li><p>Before we move on, you can save the results for ALL of these data.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb24"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="ex">goa_summary</span> <span class="op">&lt;</span>- data.frame<span class="er">(</span><span class="ex">ego</span><span class="kw">)</span></span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a><span class="ex">up_goa_summary</span> <span class="op">&lt;</span>- data.frame<span class="er">(</span><span class="ex">sig_up_ego</span><span class="kw">)</span></span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a><span class="ex">down_goa_summary</span> <span class="op">&lt;</span>- data.frame<span class="er">(</span><span class="ex">sig_down_ego</span><span class="kw">)</span></span>
+<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a><span class="ex">write.csv</span><span class="er">(</span><span class="ex">goa_summary,</span> file.path<span class="er">(</span><span class="fu">dir</span>, <span class="st">"Maine_21C_29C.All_DEGs.GOEnrichment.csv"</span><span class="kw">))</span></span>
+<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a><span class="ex">write.csv</span><span class="er">(</span><span class="ex">up_goa_summary,</span> file.path<span class="er">(</span><span class="fu">dir</span>, <span class="st">"Maine_21C_29C.UpReg_DEGs.GOEnrichment.csv"</span><span class="kw">))</span></span>
+<span id="cb24-7"><a href="#cb24-7" aria-hidden="true" tabindex="-1"></a><span class="ex">write.csv</span><span class="er">(</span><span class="ex">up_goa_summary,</span> file.path<span class="er">(</span><span class="fu">dir</span>, <span class="st">"Maine_21C_29C.DownReg_DEGs.GOEnrichment.csv"</span><span class="kw">))</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div></li>
+<li><p>Lastly, the final plot we are going to make is a bit weird. It is a network plot, but instead of showing interactions, it makes networks of genes with similar “functions” based on GO-term similarity. I think they look really interesting and <strong><em>can</em></strong> be informative (they are not always helpful).</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb25"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="ex">ego_sim</span> <span class="op">&lt;</span>- enrichplot::pairwise_termsim<span class="er">(</span><span class="ex">ego</span><span class="kw">)</span></span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a><span class="ex">emapplot</span><span class="er">(</span><span class="ex">ego_sim,</span> showCategory = 50<span class="kw">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>When looking at these terms, it is not very clear how they correspond to heat stress. It may be that exploring the enrichment at the level of “Biological Process” is too broad. You should explore the enrichment with another GO term “level”</p></li>
+</ol>
+<p>And that’s it! We will talk about natural follow up steps that are online in the lab itself. It is critical to mention that you should use these guided labs as an <strong>outline</strong> of how to do differential gene expression analyses. There are so many other considerations outside the scope of this lab to consider, but the goal is to “break through” that initial barrier! As someone that loves biochemistry, I like to think of the class as giving you the “activation energy” to catalyze your own learning :)</p>
+<hr>
+</section>
+<section id="other-cool-visualizations-played-with-too-late-on-sunday-to-break-down" class="level2">
+<h2 class="anchored" data-anchor-id="other-cool-visualizations-played-with-too-late-on-sunday-to-break-down">Other cool visualizations (played with too late on Sunday to break down)</h2>
+<ol type="1">
+<li><p>Re-run the <code>enrichGO</code> for your up-regulated genes (<code>sig_up_ego</code>), with <code>ont = ALL</code></p></li>
+<li><p>Then run the following command:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb26"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="ex">p_facet</span> <span class="op">&lt;</span>- barplot<span class="er">(</span></span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>  <span class="ex">sig_up_ego,</span></span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>  <span class="ex">x</span> = <span class="st">"Count"</span>,</span>
+<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a>  <span class="ex">showCategory</span> = 15,</span>
+<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">split</span> = <span class="st">"ONTOLOGY"</span><span class="kw">)</span> <span class="ex">+</span></span>
+<span id="cb26-6"><a href="#cb26-6" aria-hidden="true" tabindex="-1"></a>  <span class="ex">aes</span><span class="er">(</span><span class="ex">fill</span> = ONTOLOGY<span class="kw">)</span> <span class="ex">+</span></span>
+<span id="cb26-7"><a href="#cb26-7" aria-hidden="true" tabindex="-1"></a>  <span class="ex">scale_fill_brewer</span><span class="er">(</span><span class="ex">palette</span> = <span class="st">"Set2"</span><span class="kw">)</span> <span class="ex">+</span></span>
+<span id="cb26-8"><a href="#cb26-8" aria-hidden="true" tabindex="-1"></a>  <span class="ex">enrichplot::autofacet</span><span class="er">(</span><span class="ex">by</span> = <span class="st">"row"</span>, scales = <span class="st">"free"</span><span class="kw">)</span></span>
+<span id="cb26-9"><a href="#cb26-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-10"><a href="#cb26-10" aria-hidden="true" tabindex="-1"></a><span class="ex">p_facet</span> + scale_y_discrete<span class="er">(</span><span class="kw">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div></li>
+</ol>
+<hr>
+</section>
+</section>
+<section id="quick-start-guide" class="level1">
+<h1>Quick Start Guide</h1>
+<hr>
+<p>This is for your reference in the future, so you don’t have to slog through all the work above! Also, what a great way to practice this week :)</p>
+<p>Below, the steps are numbered with emtpy code blocks below them. Copy-paste your commands there!</p>
+<p>With the packages installed, you will not need to run the installation a second time!</p>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

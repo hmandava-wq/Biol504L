@@ -1,0 +1,26 @@
+{
+  "read_files": [
+    "../raw_read_prep/Dmel_Maine_29C_Rep3.Fwd.20q.80nt.fastq.gz",
+    "../raw_read_prep/Dmel_Maine_29C_Rep3.Rev.20q.80nt.fastq.gz"
+  ],
+  "expected_format": "IU",
+  "compatible_fragment_ratio": 1.0,
+  "num_compatible_fragments": 21842949,
+  "num_incompatible_fragments": 0,
+  "num_assigned_fragments": 21842949,
+  "num_frags_with_concordant_consistent_mappings": 21497004,
+  "num_frags_with_inconsistent_or_orphan_mappings": 432930,
+  "strand_mapping_bias": 0.5039933006478484,
+  "IU": 0,
+  "ISF": 10834346,
+  "ISR": 10662658,
+  "OU": 0,
+  "OSF": 0,
+  "OSR": 0,
+  "MU": 0,
+  "MSF": 0,
+  "MSR": 0,
+  "U": 0,
+  "SF": 273682,
+  "SR": 159248
+}

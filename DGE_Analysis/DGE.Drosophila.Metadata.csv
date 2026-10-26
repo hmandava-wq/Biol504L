@@ -1,0 +1,13 @@
+Species,Sample Accession,Geographic Location,Temperature,Replicate,quant_folders
+Drosophila melanogaster,SRR1576457,Maine,21C,1,Salmon_Quant/Dmel_Maine_21C_Rep1_Quant
+Drosophila melanogaster,SRR1576458,Maine,21C,2,Salmon_Quant/Dmel_Maine_21C_Rep2_Quant
+Drosophila melanogaster,SRR1576459,Maine,21C,3,Salmon_Quant/Dmel_Maine_21C_Rep3_Quant
+Drosophila melanogaster,SRR1576460,Maine,29C,1,Salmon_Quant/Dmel_Maine_29C_Rep1_Quant
+Drosophila melanogaster,SRR1576461 ,Maine,29C,2,Salmon_Quant/Dmel_Maine_29C_Rep2_Quant
+Drosophila melanogaster,SRR1576462,Maine,29C,3,Salmon_Quant/Dmel_Maine_29C_Rep3_Quant
+Drosophila melanogaster,SRR1576463,Panama,21C,1,Salmon_Quant/Dmel_Panama_21C_Rep1_Quant
+Drosophila melanogaster,SRR1576464,Panama,21C,2,Salmon_Quant/Dmel_Panama_21C_Rep2_Quant
+Drosophila melanogaster,SRR1576465,Panama,21C,3,Salmon_Quant/Dmel_Panama_21C_Rep3_Quant
+Drosophila melanogaster,SRR1576514,Panama,29C,1,Salmon_Quant/Dmel_Panama_29C_Rep1_Quant
+Drosophila melanogaster,SRR1576515,Panama,29C,2,Salmon_Quant/Dmel_Panama_29C_Rep2_Quant
+Drosophila melanogaster,SRR1576516,Panama,29C,3,Salmon_Quant/Dmel_Panama_29C_Rep3_Quant
